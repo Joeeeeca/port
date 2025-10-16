@@ -6,11 +6,13 @@ import path from "path";
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(), // 👈 this line is essential
+    tailwindcss(),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
     },
   },
+  base: "/port/", // 👈 ADD THIS LINE
 });
+
