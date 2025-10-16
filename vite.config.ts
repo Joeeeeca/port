@@ -4,15 +4,11 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
     },
   },
-  base: "/port/", // 👈 ADD THIS LINE
+  base: "/port/", // 👈 important for GitHub Pages
 });
-
