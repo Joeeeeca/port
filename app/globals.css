@@ -1,0 +1,38 @@
+@theme {
+  --dark-selector: '.dark';
+  --light-selector: '.light';
+}
+
+@import "tailwindcss";
+
+/* 🌞 Default (light mode) */
+@theme {
+  --color-background: hsl(0, 0%, 100%);
+  --color-background-card: hsl(0, 0%, 98%);
+  --color-border: hsl(0, 0%, 85%); /* ✅ soft neutral border */
+  --color-foreground: hsl(222, 10%, 10%);
+  --color-muted-foreground: hsl(222, 10%, 40%);
+  --color-accent: hsl(270, 95%, 60%);
+  --color-primary: hsl(210, 90%, 55%);
+}
+
+/* 🌙 Dark mode overrides */
+.dark {
+  --color-background: hsl(222, 10%, 8%);
+  --color-background-card: hsl(222, 10%, 12%);
+  --color-border: hsl(222, 10%, 25%); /* ✅ softer dark border */
+  --color-foreground: hsl(210, 20%, 98%);
+  --color-muted-foreground: hsl(210, 10%, 70%);
+  --color-accent: hsl(270, 95%, 70%);
+  --color-primary: hsl(210, 90%, 60%);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen antialiased;
+  }
+}
