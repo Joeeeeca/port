@@ -11,7 +11,7 @@ const projects = [
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://georgecaponguitarlessons.com/",
-    image: "/Project-1.png",
+    image: "../dist/Project-1.png",
   },
   {
     title: "Sports Mindset Website",
@@ -20,7 +20,7 @@ const projects = [
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://sportsmindmastered.com/",
-    image: "/Project-2.png",
+    image: "../dist/Project-2.png",
   },
   {
     title: "Christmas Lights Display Website",
@@ -29,7 +29,7 @@ const projects = [
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://sportsmindmastered.com/",
-    image: "/Project-3.png",
+    image: "../dist/Project-3.png",
   },
 ]
 
