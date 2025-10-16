@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/buttons"
+import { Button } from "./ui/buttons";
 import { Linkedin, Mail, Instagram } from "lucide-react"
 import { Helmet } from "react-helmet-async";
 

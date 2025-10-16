@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card"
+import { Card } from "./ui/card";
 import { Code2, Palette, Rocket, Users } from "lucide-react"
 import { Helmet } from "react-helmet-async";
 

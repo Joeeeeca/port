@@ -5,10 +5,10 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./"),
-    },
+ resolve: {
+  alias: {
+    "@": path.resolve(__dirname, "./src"),
   },
+},
   base: "/port/", // 👈 important for GitHub Pages
 });

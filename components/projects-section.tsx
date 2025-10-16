@@ -1,37 +1,43 @@
-import { Button } from "@/components/ui/buttons"
-import { Card } from "@/components/ui/card.tsx"
+import { Card } from "./ui/card";
+import { Button } from "./ui/buttons";
 import { ExternalLink, Github } from "lucide-react"
 import { Helmet } from "react-helmet-async";
+import project1 from "./src/assets/Project-1.png";
+import project2 from "./src/assets/Project-2.png";
+import project3 from "./src/assets/Project-3.png";
+
+
+
 
 const projects = [
   {
     title: "Guitar Lessons Website",
     description:
-      "A responsive website designed for a local guitar teacher to showcase lessons, pricing, and contact details. Built using HTML, CSS, and JavaScript, this project focused on clean structure, accessibility, and creating a smooth user experience across devices.",
+      "A responsive website designed for a local guitar teacher...",
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://georgecaponguitarlessons.com/",
-    image: "../dist/Project-1.png",
+    image: project1,
   },
   {
     title: "Sports Mindset Website",
     description:
-      "A clean and engaging website for a sports mindset coach, designed to help athletes—from beginners to world champions—improve confidence, composure, and mental resilience. Built with HTML, CSS, and JavaScript, the site highlights key programs and provides a clear path for client inquiries.",
+      "A clean and engaging website for a sports mindset coach...",
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://sportsmindmastered.com/",
-    image: "../dist/Project-2.png",
+    image: project2,
   },
   {
     title: "Christmas Lights Display Website",
     description:
-      "A festive website created for a local Christmas lights display, built to share its story, location, and charitable mission. Developed with HTML, CSS, and JavaScript, the site includes a donation link, embedded Facebook updates, and responsive design for easy viewing across devices.",
+      "A festive website created for a local Christmas lights display...",
     technologies: ["Figma", "HTML", "CSS", "JavaScript"],
     githubUrl: "#",
     liveUrl: "https://sportsmindmastered.com/",
-    image: "../dist/Project-3.png",
+    image: project3,
   },
-]
+];
 
 export function ProjectsSection() {
   return (

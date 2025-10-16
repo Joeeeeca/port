@@ -13,8 +13,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <HelmetProvider>
       <main>
         <HeroSection />
-        <AboutSection />
         <ProjectsSection />
+        <AboutSection />
         <ContactSection />
         <ThemeToggle />
       </main>

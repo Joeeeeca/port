@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/buttons"
+import { Card } from "./ui/card";
+import { Button } from "./ui/buttons";
 import { Mail, Linkedin, Instagram, FileText } from "lucide-react"
 import { Helmet } from "react-helmet-async";
 
