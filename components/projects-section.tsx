@@ -1,5 +1,4 @@
 import { Card } from "./ui/card";
-import { Button } from "./ui/buttons";
 import { ExternalLink, Github } from "lucide-react"
 import { Helmet } from "react-helmet-async";
 import project1 from "./src/assets/Project-1.png";
