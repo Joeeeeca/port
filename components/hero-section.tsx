@@ -39,16 +39,20 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4">
+            <a href="#projects" className="mx-auto lg:mx-0">
          <Button
   size="lg"
   className="bg-transparent border-2 border-accent text-accent hover:bg-accent/10 hover:text-[#fff] dark:text-accent dark:border-accent text-primary border-primary mx-auto lg:mx-0 cursor-pointer"
 >
   View My Work
 </Button>
+</a>
 
+<a href="#contact" className="mx-auto lg:mx-0">
             <Button size="lg" variant="outline" className="border-2 bg-transparent mx-auto lg:mx-0 cursor-pointer">
               Get In Touch
             </Button>
+            </a>
           </div>
 
           {/* Social Links */}

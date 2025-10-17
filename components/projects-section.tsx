@@ -152,17 +152,6 @@ export function ProjectsSection() {
             </div>
           ))}
         </div>
-
-        {/* View More Button */}
-        <div className="flex justify-center mt-16">
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-2 border-accent text-accent hover:bg-accent/10 bg-transparent"
-          >
-            View All Projects
-          </Button>
-        </div>
       </div>
     </section>
     </>
