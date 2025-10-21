@@ -10,5 +10,5 @@ export default defineConfig({
     "@": path.resolve(__dirname, "./src"),
   },
 },
-  base: "/port/", // 👈 important for GitHub Pages
+  base: "./", // 👈 important for GitHub Pages
 });
