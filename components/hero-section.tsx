@@ -26,14 +26,14 @@ export function HeroSection() {
             <p className="text-accent font-mono text-sm md:text-base text-center lg:text-left">Hi, my name is</p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground text-balance text-center lg:text-left">Joe Capon</h1>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-muted-foreground text-balance text-center lg:text-left">
-              I build things for the web.
+              I build fast, accessible, modern websites that help businesses grow.
             </h2>
           </div>
 
           {/* Description */}
           <div className="max-w-2xl">
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-pretty text-center lg:text-left">
-            I’m Joe, a freelance web developer specializing in fast, accessible, modern websites.
+            I’m a freelance web developer specializing in performance, responsive design, and SEO-focused builds that make businesses look more professional online.
             </p>
           </div>
 
