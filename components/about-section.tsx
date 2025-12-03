@@ -61,7 +61,7 @@ export function AboutSection() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
               <span className="text-accent font-mono text-xl md:text-2xl">03.</span> About Me
             </h2>
-            <div className="flex-1 h-px bg-border max-w-xs hidden md:block bg-gray-800" />
+            <div className="flex-1 h-px max-w-xs hidden md:block bg-gray-800" />
           </div>
         </div>
 

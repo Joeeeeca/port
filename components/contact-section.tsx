@@ -48,11 +48,11 @@ export function ContactSection() {
         {/* Section Header */}
         <div className="mb-16 space-y-4 text-center">
           <div className="flex items-center justify-center gap-4">
-            <div className="flex-1 h-px bg-border max-w-xs hidden md:block bg-gray-800" />
+            <div className="flex-1 h-px  max-w-xs hidden md:block bg-gray-800" />
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
               <span className="text-accent font-mono text-xl md:text-2xl">04.</span> Get In Touch
             </h2>
-            <div className="flex-1 h-px bg-border max-w-xs hidden md:block bg-gray-800" />
+            <div className="flex-1 h-px  max-w-xs hidden md:block bg-gray-800" />
           </div>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-balance">
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel
@@ -70,7 +70,7 @@ export function ContactSection() {
       rel="noopener noreferrer"
       className="group"
     >
-      <Card className="p-6 bg-card/50 backdrop-blur-sm border-border border-gray-800 hover:border-accent/50 transition-all hover:translate-y-[-2px] text-center lg:text-left">
+      <Card className="p-6 bg-card/50 backdrop-blur-sm border-gray-800 hover:border-accent/50 transition-all hover:translate-y-[-2px] text-center lg:text-left">
         <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:gap-4">
           <div className="p-3 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors flex items-center justify-center">
             <method.icon className="w-6 h-6 text-accent" />
@@ -97,7 +97,7 @@ export function ContactSection() {
         </div>
 
         {/* Footer Note */}
-        <div className="mt-16 pt-8 border-t border-border border-gray-800 text-center">
+        <div className="mt-16 pt-8 border-t border-gray-800 text-center">
           <p className="text-sm text-muted-foreground">
             Designed & Built by <span className="text-accent font-mono">Joe Capon</span>
           </p>
