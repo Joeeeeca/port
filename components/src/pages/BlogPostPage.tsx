@@ -19,7 +19,7 @@ export default function BlogPostPage() {
 
       // Map PB post → UI
       const mapped = {
-        slug: found.slug || found.id,
+        slug: found.slugs || found.id,
         title: found.title,
         content: found.content,
         excerpt: found.excerpt,
@@ -38,13 +38,13 @@ export default function BlogPostPage() {
       // Related posts
       const all = await fetchBlogPosts();
       const relatedPosts = all
-        .filter((p) => p.slug !== slug)
+        .filter((p) => p.slugs !== slug)
         .filter((p) =>
           p.tags?.split(",").some((t) => mapped.tags.includes(t.trim()))
         )
         .slice(0, 3)
         .map((p) => ({
-          slug: p.slug || p.id,
+          slug: p.slugs || p.id,
           title: p.title,
           excerpt: p.excerpt || p.content.slice(0, 100),
           category: p.category || "General",
