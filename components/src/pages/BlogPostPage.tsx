@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
@@ -91,7 +92,9 @@ export default function BlogPostPage() {
 
         <article className="px-6 py-16">
           <div className="prose prose-lg mx-auto max-w-3xl dark:prose-invert">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+  {post.content}
+</ReactMarkdown>
           </div>
         </article>
 
