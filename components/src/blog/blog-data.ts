@@ -1,21 +1,20 @@
-// components/src/blog/blog-data.ts
-import pb from "../../../lib/pocketbase"; 
-// adjust path *if needed* depending on your folder layout
+import pb from "../../../lib/pocketbase";
 
 export interface BlogPost {
   id: string;
-  slug: string; 
   title: string;
-  excerpt?: string;
   content: string;
-  created: string;
+  excerpt?: string;
+  tags?: string;
   category?: string;
   readTime?: string;
-  tags?: string;
-  coverImage?: string;
+  slug?: string;
+  created: string;
 }
 
-// Fetch ALL posts from PocketBase
+/* -----------------------------
+   Fetch ALL Blog Posts
+----------------------------- */
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   const records = await pb.collection("posts").getFullList({
     sort: "-created",
@@ -24,23 +23,34 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
   return records as unknown as BlogPost[];
 }
 
-// Fetch ALL unique tags
+/* -----------------------------
+   Fetch a SINGLE post by slug
+----------------------------- */
+export async function fetchBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const record = await pb.collection("posts").getFirstListItem(
+      pb.filter(`slug="${slug}"`)
+    );
+
+    return record as unknown as BlogPost;
+  } catch (err) {
+    return null;
+  }
+}
+
+/* -----------------------------
+   Get all tags (for blog filter)
+----------------------------- */
 export async function fetchAllTags(): Promise<string[]> {
   const posts = await fetchBlogPosts();
 
-  const set = new Set<string>();
+  const tagSet = new Set<string>();
 
   posts.forEach((p) => {
     if (p.tags) {
-      p.tags.split(",").forEach((t) => set.add(t.trim()));
+      p.tags.split(",").forEach((t) => tagSet.add(t.trim()));
     }
   });
 
-  return Array.from(set);
-}
-
-// Fetch ONE post by slug
-export async function fetchBlogPost(slug: string): Promise<BlogPost | null> {
-  const posts = await fetchBlogPosts();
-  return posts.find((p) => p.slug === slug) ?? null;
+  return [...tagSet];
 }
