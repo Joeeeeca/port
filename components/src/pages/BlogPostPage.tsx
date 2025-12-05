@@ -67,7 +67,7 @@ function mapRecordToUi(record: any): UiPost {
     title: record.title,
     content,
     excerpt: record.excerpt ? String(record.excerpt).trim() : "",
-    category: record.category || "General",
+    category: record.category || record.categories || record.type || "General",
     readTime: record.readTime || "5 min read",
     date: new Date(record.created).toLocaleDateString("en-UK", {
       month: "short",
@@ -138,14 +138,18 @@ export default function BlogPostPage() {
     [post]
   );
 
-  const headings = useMemo(() => {
-    if (!cleanedContent) return [];
-    return cleanedContent
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.startsWith("## "))
-      .map((line) => line.replace(/^##\s*/, ""));
-  }, [cleanedContent]);
+const headings = useMemo(() => {
+  if (!post?.content) return [];
+
+  // Create a DOM parser
+  const doc = new DOMParser().parseFromString(post.content, "text/html");
+
+  // Select <h2> tags
+  const h2s = Array.from(doc.querySelectorAll("h2"));
+
+  return h2s.map((h) => h.textContent.trim());
+}, [post]);
+
 
   if (loading) {
     return (
@@ -378,12 +382,21 @@ export default function BlogPostPage() {
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
                         <a
-                          key={tag}
-                          href={`/blog?tag=${encodeURIComponent(tag)}`}
-                          className="rounded-full bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-                        >
-                          {tag}
-                        </a>
+  key={tag}
+  href={`/blog?tag=${encodeURIComponent(tag)}`}
+  className="
+    rounded-full
+    bg-primary/10
+    px-3 py-1
+    text-xs
+    font-medium
+    text-primary
+    transition-colors
+    hover:bg-primary/20
+  "
+>
+  {tag}
+</a>
                       ))}
                     </div>
                   </div>
