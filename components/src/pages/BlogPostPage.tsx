@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-import rehypeRaw from "rehype-raw";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
@@ -15,6 +14,14 @@ function stripIndent(str: string) {
 
   const indent = Math.min(...nonEmpty.map((l) => l.search(/\S/)));
   return lines.map((l) => (indent > 0 ? l.slice(indent) : l)).join("\n");
+}
+
+// Remove the old <pre><code ...> wrapper we used before
+function cleanLegacyHtml(raw: string) {
+  if (!raw) return "";
+  return raw
+    .replace(/^<pre><code[^>]*>/i, "") // opening tag at start
+    .replace(/<\/code><\/pre>\s*$/i, ""); // closing tag at end
 }
 
 function slugifyHeading(text: string) {
@@ -37,13 +44,19 @@ type UiPost = {
 
 // Map a PocketBase record into the UI shape we want
 function mapRecordToUi(record: any): UiPost {
+  const rawContent = record.content || "";
+  const content = cleanLegacyHtml(String(rawContent));
+
+  const explicitExcerpt = record.excerpt ? String(record.excerpt).trim() : "";
+  const excerptSource = explicitExcerpt || content;
+
   return {
     slug: record.slugs || record.slug || record.id,
     title: record.title,
-    content: record.content || "",
-    excerpt:
-      record.excerpt ||
-      (record.content ? record.content.slice(0, 140).trim() + "..." : ""),
+    content,
+    excerpt: excerptSource
+      ? excerptSource.slice(0, 140).trimEnd() + (excerptSource.length > 140 ? "…" : "")
+      : "",
     category: record.category || "General",
     readTime: record.readTime || "5 min read",
     date: new Date(record.created).toLocaleDateString("en-UK", {
@@ -95,9 +108,7 @@ export default function BlogPostPage() {
 
         const related = allMapped
           .filter((p) => p.slug !== mapped.slug)
-          .filter((p) =>
-            p.tags.some((tag) => mapped.tags.includes(tag))
-          )
+          .filter((p) => p.tags.some((tag) => mapped.tags.includes(tag)))
           .slice(0, 3);
 
         setRelatedPosts(related);
@@ -181,17 +192,11 @@ export default function BlogPostPage() {
           <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
             {/* Breadcrumbs */}
             <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-              <Link
-                to="/"
-                className="transition-colors hover:text-primary"
-              >
+              <Link to="/" className="transition-colors hover:text-primary">
                 Home
               </Link>
               <span className="text-xs">/</span>
-              <Link
-                to="/blog"
-                className="transition-colors hover:text-primary"
-              >
+              <Link to="/blog" className="transition-colors hover:text-primary">
                 Blog
               </Link>
               <span className="text-xs">/</span>
@@ -201,7 +206,6 @@ export default function BlogPostPage() {
             {/* Category badge */}
             <div className="mb-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 font-mono text-sm font-medium text-primary">
-                {/* tiny book icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4"
@@ -240,9 +244,7 @@ export default function BlogPostPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">JC</p>
-                  <p className="text-sm text-muted-foreground">
-                    Web Developer
-                  </p>
+                  <p className="text-sm text-muted-foreground">Web Developer</p>
                 </div>
               </div>
 
@@ -295,61 +297,31 @@ export default function BlogPostPage() {
             {/* Main content */}
             <div className="min-w-0">
               <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-<ReactMarkdown
-  rehypePlugins={[rehypeRaw, rehypeHighlight]}
-  components={{
-    h2: ({ node, ...props }) => (
-      <h2
-        {...props}
-        className="mb-4 mt-12 text-2xl font-bold text-foreground first:mt-0"
-      />
-    ),
-
-    p: ({ node, ...props }) => (
-      <p
-        {...props}
-        className="mb-6 leading-relaxed text-muted-foreground"
-      />
-    ),
-
-    li: ({ node, ...props }) => (
-      <li
-        {...props}
-        className="mb-2 ml-4 text-muted-foreground list-disc marker:text-primary"
-      />
-    ),
-
-    code({
-      inline,
-      className,
-      children,
-      ...props
-    }: {
-      inline?: boolean;
-      className?: string;
-      children?: React.ReactNode;
-    }) {
-      // detect language e.g. "language-js"
-      const lang = className?.replace("language-", "");
-
-      return inline ? (
-        <code
-          className="bg-muted px-1 py-0.5 rounded text-primary font-mono text-sm"
-          {...props}
-        >
-          {children}
-        </code>
-      ) : (
-        <pre className="rounded-lg bg-muted p-4 overflow-x-auto border border-border my-6">
-          <code className={className}>{children}</code>
-        </pre>
-      );
-    }
-  }}
->
-  {cleanedContent}
-</ReactMarkdown>
-
+                <ReactMarkdown
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    h2: ({ node, ...props }) => (
+                      <h2
+                        {...props}
+                        className="mb-6 mt-16 text-2xl font-bold tracking-tight text-foreground first:mt-0 md:text-3xl"
+                      />
+                    ),
+                    p: ({ node, ...props }) => (
+                      <p
+                        {...props}
+                        className="mb-6 leading-relaxed text-muted-foreground"
+                      />
+                    ),
+                    li: ({ node, ...props }) => (
+                      <li
+                        {...props}
+                        className="mb-2 ml-4 list-disc text-muted-foreground marker:text-primary"
+                      />
+                    ),
+                  }}
+                >
+                  {cleanedContent}
+                </ReactMarkdown>
               </div>
 
               {/* CTA box */}
@@ -430,118 +402,6 @@ export default function BlogPostPage() {
                   </div>
                 )}
 
-{/* CONTINUE READING */}
-{relatedPosts.length > 0 && (
-  <section className="border-t border-border bg-muted/30 px-6 py-20">
-    <div className="mx-auto max-w-6xl">
-      {/* Header */}
-      <div className="mb-12 flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-            Continue Reading
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            More articles you might find helpful
-          </p>
-        </div>
-
-        <Link
-          to="/blog"
-          className="hidden md:flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm 
-                     font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
-        >
-          View all articles
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="h-4 w-4"
-          >
-            <path d="M5 12h14" />
-            <path d="m13 6 6 6-6 6" />
-          </svg>
-        </Link>
-      </div>
-
-      {/* Related posts grid */}
-      <div className="grid gap-8 md:grid-cols-3">
-        {relatedPosts.map((p) => (
-          <Link
-            key={p.slug}
-            to={`/blog/${p.slug}`}
-            className="group flex flex-col rounded-2xl border border-border bg-card p-6 
-                       transition-all hover:border-primary/50 hover:shadow-xl"
-          >
-            <span className="mb-4 inline-flex items-center rounded-full bg-primary/10 
-                             px-3 py-1 font-mono text-xs font-medium text-primary">
-              {p.category}
-            </span>
-
-            <h3 className="mb-3 text-lg font-semibold leading-snug text-foreground 
-                           transition-colors group-hover:text-primary">
-              {p.title}
-            </h3>
-
-            <p className="mb-6 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-              {p.excerpt}
-            </p>
-
-            <div className="flex items-center justify-between border-t border-border pt-4">
-              <span className="text-xs text-muted-foreground">{p.readTime}</span>
-              <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 
-                               transition-opacity group-hover:opacity-100">
-                Read more
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="h-3 w-3"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m13 6 6 6-6 6" />
-                </svg>
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* Mobile "View all" link */}
-      <Link
-        to="/blog"
-        className="mt-10 flex md:hidden items-center justify-center gap-2 rounded-full 
-                   border border-border px-6 py-3 text-sm font-medium text-foreground 
-                   transition-colors hover:border-primary hover:text-primary"
-      >
-        View all articles
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="h-4 w-4"
-        >
-          <path d="M5 12h14" />
-          <path d="m13 6 6 6-6 6" />
-        </svg>
-      </Link>
-    </div>
-  </section>
-)}
-
-
-
                 {/* Back to blog */}
                 <a
                   href="/blog"
@@ -568,7 +428,7 @@ export default function BlogPostPage() {
           </div>
         </div>
 
-        {/* Related posts */}
+        {/* CONTINUE READING (bottom) */}
         {relatedPosts.length > 0 && (
           <section className="border-t border-border bg-muted/30">
             <div className="mx-auto max-w-6xl px-6 py-20">
