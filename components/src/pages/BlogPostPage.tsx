@@ -22,12 +22,20 @@ function cleanLegacyHtml(raw: string) {
   if (!raw) return "";
 
   return raw
-    // Remove opening <pre><code ...>
+    // Remove old <pre><code> wrappers
     .replace(/<pre><code[^>]*>/gi, "")
-    // Remove closing </code></pre>
     .replace(/<\/code><\/pre>/gi, "")
-    // Trim extra empty lines that were left behind
-    .replace(/\n{3,}/g, "\n\n");
+    
+    // Remove stray <p></p>, <p>, </p> anywhere
+    .replace(/<p>\s*<\/p>/gi, "")
+    .replace(/<\/p>\s*<p>/gi, "\n\n")
+    .replace(/<p>/gi, "")
+    .replace(/<\/p>/gi, "")
+    
+    // Cleanup excessive empty lines
+    .replace(/\n{3,}/g, "\n\n")
+    
+    .trim();
 }
 
 
