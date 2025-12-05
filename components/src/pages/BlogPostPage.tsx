@@ -17,12 +17,19 @@ function stripIndent(str: string) {
 }
 
 // Remove the old <pre><code ...> wrapper we used before
+// Remove leftover <pre><code> wrappers anywhere in the text
 function cleanLegacyHtml(raw: string) {
   if (!raw) return "";
+
   return raw
-    .replace(/^<pre><code[^>]*>/i, "") // opening tag at start
-    .replace(/<\/code><\/pre>\s*$/i, ""); // closing tag at end
+    // Remove opening <pre><code ...>
+    .replace(/<pre><code[^>]*>/gi, "")
+    // Remove closing </code></pre>
+    .replace(/<\/code><\/pre>/gi, "")
+    // Trim extra empty lines that were left behind
+    .replace(/\n{3,}/g, "\n\n");
 }
+
 
 function slugifyHeading(text: string) {
   return text
