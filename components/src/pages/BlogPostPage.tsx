@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
