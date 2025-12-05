@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
@@ -294,34 +296,56 @@ export default function BlogPostPage() {
             <div className="min-w-0">
               <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
                 <ReactMarkdown
-                  components={{
-                    h2: ({ node, ...props }) => {
-                      const text = String(props.children ?? "");
-                      const id = slugifyHeading(text);
-                      return (
-                        <h2
-                          id={id}
-                          {...props}
-                          className="mb-6 mt-16 text-2xl font-bold tracking-tight text-foreground first:mt-0 md:text-3xl"
-                        />
-                      );
-                    },
-                    p: ({ node, ...props }) => (
-                      <p
-                        {...props}
-                        className="mb-6 text-lg leading-relaxed text-muted-foreground"
-                      />
-                    ),
-                    li: ({ node, ...props }) => (
-                      <li
-                        {...props}
-                        className="mb-2 ml-4 text-lg leading-relaxed text-muted-foreground list-disc marker:text-primary"
-                      />
-                    ),
-                  }}
-                >
-                  {cleanedContent}
-                </ReactMarkdown>
+  rehypePlugins={[rehypeHighlight]}
+  components={{
+    h2: ({ node, ...props }) => (
+      <h2
+        {...props}
+        className="mb-4 mt-12 text-2xl font-bold text-foreground first:mt-0"
+      />
+    ),
+    p: ({ node, ...props }) => (
+      <p
+        {...props}
+        className="mb-6 leading-relaxed text-muted-foreground"
+      />
+    ),
+    li: ({ node, ...props }) => (
+      <li
+        {...props}
+        className="mb-2 ml-4 text-muted-foreground list-disc marker:text-primary"
+      />
+    ),
+ code({
+  inline,
+  className,
+  children,
+  ...props
+}: {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  return inline ? (
+    <code
+      className="bg-muted px-1 py-0.5 rounded text-primary font-mono text-sm"
+      {...props}
+    >
+      {children}
+    </code>
+  ) : (
+    <pre className="rounded-lg bg-muted p-4 overflow-x-auto border border-border my-6">
+      <code className={className} {...props}>
+        {children}
+      </code>
+    </pre>
+  );
+},
+
+  }}
+>
+  {cleanedContent}
+</ReactMarkdown>
               </div>
 
               {/* CTA box */}
@@ -401,6 +425,118 @@ export default function BlogPostPage() {
                     </nav>
                   </div>
                 )}
+
+{/* CONTINUE READING */}
+{relatedPosts.length > 0 && (
+  <section className="border-t border-border bg-muted/30 px-6 py-20">
+    <div className="mx-auto max-w-6xl">
+      {/* Header */}
+      <div className="mb-12 flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+            Continue Reading
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            More articles you might find helpful
+          </p>
+        </div>
+
+        <Link
+          to="/blog"
+          className="hidden md:flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm 
+                     font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
+        >
+          View all articles
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="h-4 w-4"
+          >
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </Link>
+      </div>
+
+      {/* Related posts grid */}
+      <div className="grid gap-8 md:grid-cols-3">
+        {relatedPosts.map((p) => (
+          <Link
+            key={p.slug}
+            to={`/blog/${p.slug}`}
+            className="group flex flex-col rounded-2xl border border-border bg-card p-6 
+                       transition-all hover:border-primary/50 hover:shadow-xl"
+          >
+            <span className="mb-4 inline-flex items-center rounded-full bg-primary/10 
+                             px-3 py-1 font-mono text-xs font-medium text-primary">
+              {p.category}
+            </span>
+
+            <h3 className="mb-3 text-lg font-semibold leading-snug text-foreground 
+                           transition-colors group-hover:text-primary">
+              {p.title}
+            </h3>
+
+            <p className="mb-6 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+              {p.excerpt}
+            </p>
+
+            <div className="flex items-center justify-between border-t border-border pt-4">
+              <span className="text-xs text-muted-foreground">{p.readTime}</span>
+              <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 
+                               transition-opacity group-hover:opacity-100">
+                Read more
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="h-3 w-3"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m13 6 6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Mobile "View all" link */}
+      <Link
+        to="/blog"
+        className="mt-10 flex md:hidden items-center justify-center gap-2 rounded-full 
+                   border border-border px-6 py-3 text-sm font-medium text-foreground 
+                   transition-colors hover:border-primary hover:text-primary"
+      >
+        View all articles
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="h-4 w-4"
+        >
+          <path d="M5 12h14" />
+          <path d="m13 6 6 6-6 6" />
+        </svg>
+      </Link>
+    </div>
+  </section>
+)}
+
+
 
                 {/* Back to blog */}
                 <a
