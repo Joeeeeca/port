@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+import rehypeRaw from "rehype-raw";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
@@ -294,8 +295,8 @@ export default function BlogPostPage() {
             {/* Main content */}
             <div className="min-w-0">
               <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-                <ReactMarkdown
-  rehypePlugins={[rehypeHighlight]}
+<ReactMarkdown
+  rehypePlugins={[rehypeRaw, rehypeHighlight]}
   components={{
     h2: ({ node, ...props }) => (
       <h2
@@ -303,48 +304,52 @@ export default function BlogPostPage() {
         className="mb-4 mt-12 text-2xl font-bold text-foreground first:mt-0"
       />
     ),
+
     p: ({ node, ...props }) => (
       <p
         {...props}
         className="mb-6 leading-relaxed text-muted-foreground"
       />
     ),
+
     li: ({ node, ...props }) => (
       <li
         {...props}
         className="mb-2 ml-4 text-muted-foreground list-disc marker:text-primary"
       />
     ),
- code({
-  inline,
-  className,
-  children,
-  ...props
-}: {
-  inline?: boolean;
-  className?: string;
-  children?: React.ReactNode;
-}) {
-  return inline ? (
-    <code
-      className="bg-muted px-1 py-0.5 rounded text-primary font-mono text-sm"
-      {...props}
-    >
-      {children}
-    </code>
-  ) : (
-    <pre className="rounded-lg bg-muted p-4 overflow-x-auto border border-border my-6">
-      <code className={className} {...props}>
-        {children}
-      </code>
-    </pre>
-  );
-},
 
+    code({
+      inline,
+      className,
+      children,
+      ...props
+    }: {
+      inline?: boolean;
+      className?: string;
+      children?: React.ReactNode;
+    }) {
+      // detect language e.g. "language-js"
+      const lang = className?.replace("language-", "");
+
+      return inline ? (
+        <code
+          className="bg-muted px-1 py-0.5 rounded text-primary font-mono text-sm"
+          {...props}
+        >
+          {children}
+        </code>
+      ) : (
+        <pre className="rounded-lg bg-muted p-4 overflow-x-auto border border-border my-6">
+          <code className={className}>{children}</code>
+        </pre>
+      );
+    }
   }}
 >
   {cleanedContent}
 </ReactMarkdown>
+
               </div>
 
               {/* CTA box */}
