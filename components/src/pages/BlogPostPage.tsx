@@ -47,16 +47,11 @@ function mapRecordToUi(record: any): UiPost {
   const rawContent = record.content || "";
   const content = cleanLegacyHtml(String(rawContent));
 
-  const explicitExcerpt = record.excerpt ? String(record.excerpt).trim() : "";
-  const excerptSource = explicitExcerpt || content;
-
   return {
     slug: record.slugs || record.slug || record.id,
     title: record.title,
     content,
-    excerpt: excerptSource
-      ? excerptSource.slice(0, 140).trimEnd() + (excerptSource.length > 140 ? "…" : "")
-      : "",
+    excerpt: record.excerpt ? String(record.excerpt).trim() : "",
     category: record.category || "General",
     readTime: record.readTime || "5 min read",
     date: new Date(record.created).toLocaleDateString("en-UK", {
