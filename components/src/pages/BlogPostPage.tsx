@@ -106,14 +106,9 @@ export default function BlogPostPage() {
 const headings = useMemo(() => {
   if (!post?.content) return [];
 
-  // Match ONLY the <h2>...</h2> tag, nothing else
-  const matches = post.content.match(/<h2[^>]*>(.*?)<\/h2>/g) || [];
+  const matches = [...post.content.matchAll(/<h2[^>]*>([^<]+)<\/h2>/g)];
 
-  return matches.map((h) => {
-    // extract inner text only
-    const inner = h.replace(/<[^>]+>/g, "").trim();
-    return inner;
-  });
+  return matches.map(m => m[1].trim());
 }, [post]);
 
 
