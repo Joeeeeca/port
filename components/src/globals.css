@@ -55,7 +55,7 @@
 
   /* Subheadings (H3) */
   .blog-content h3 {
-    @apply text-2xl font-semibold mt-10 mb-3;
+    @apply text-3xl font-bold mt-10 mb-3;
   }
 
   /* Paragraphs */
