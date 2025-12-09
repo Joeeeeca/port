@@ -252,27 +252,6 @@ const headings = useMemo(() => {
                   </div>
                 )}
 
-                {/* Headings */}
-                {headings.length > 0 && (
-                  <div className="rounded-xl border border-border bg-card p-6">
-                    <h3 className="mb-4 font-semibold">In this article</h3>
-                    <nav className="space-y-2">
-                      {headings.map((heading) => {
-                        const id = slugifyHeading(heading);
-                        return (
-                          <a
-                            key={id}
-                            href={`#${id}`}
-                            className="block text-sm text-muted-foreground hover:text-primary"
-                          >
-                            {heading}
-                          </a>
-                        );
-                      })}
-                    </nav>
-                  </div>
-                )}
-
                 <a
                   href="/blog"
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
