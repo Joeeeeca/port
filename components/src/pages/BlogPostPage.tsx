@@ -1,43 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 
 // ---- Helpers ------------------------------------------------
-
-function stripIndent(str: string) {
-  const lines = str.split("\n");
-  const nonEmpty = lines.filter((l) => l.trim().length > 0);
-  if (!nonEmpty.length) return str;
-
-  const indent = Math.min(...nonEmpty.map((l) => l.search(/\S/)));
-  return lines.map((l) => (indent > 0 ? l.slice(indent) : l)).join("\n");
-}
-
-// Remove the old <pre><code ...> wrapper we used before
-// Remove leftover <pre><code> wrappers anywhere in the text
-function cleanLegacyHtml(raw: string) {
-  if (!raw) return "";
-
-  return raw
-    // Remove old <pre><code> wrappers
-    .replace(/<pre><code[^>]*>/gi, "")
-    .replace(/<\/code><\/pre>/gi, "")
-    
-    // Remove stray <p></p>, <p>, </p> anywhere
-    .replace(/<p>\s*<\/p>/gi, "")
-    .replace(/<\/p>\s*<p>/gi, "\n\n")
-    .replace(/<p>/gi, "")
-    .replace(/<\/p>/gi, "")
-    
-    // Cleanup excessive empty lines
-    .replace(/\n{3,}/g, "\n\n")
-    
-    .trim();
-}
-
 
 function slugifyHeading(text: string) {
   return text
@@ -57,15 +23,20 @@ type UiPost = {
   tags: string[];
 };
 
-// Map a PocketBase record into the UI shape we want
+// Map PocketBase → UI
 function mapRecordToUi(record: any): UiPost {
-  const rawContent = record.content || "";
-  const content = cleanLegacyHtml(String(rawContent));
+  const content = String(record.content || "");
+
+  // Inject IDs into <h2>
+  const withIds = content.replace(/<h2>(.*?)<\/h2>/g, (match, text) => {
+    const id = slugifyHeading(text);
+    return `<h2 id="${id}">${text}</h2>`;
+  });
 
   return {
     slug: record.slugs || record.slug || record.id,
     title: record.title,
-    content,
+    content: withIds,
     excerpt: record.excerpt ? String(record.excerpt).trim() : "",
     category: record.category || record.categories || record.type || "General",
     readTime: record.readTime || "5 min read",
@@ -93,7 +64,7 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load the post + related posts from PocketBase
+  // Load the post + related posts
   useEffect(() => {
     async function load() {
       if (!slug) return;
@@ -104,8 +75,6 @@ export default function BlogPostPage() {
 
         const record = await fetchBlogPost(slug);
         if (!record) {
-          setPost(null);
-          setRelatedPosts([]);
           setError("Post not found");
           return;
         }
@@ -133,23 +102,17 @@ export default function BlogPostPage() {
     load();
   }, [slug]);
 
-  const cleanedContent = useMemo(
-    () => (post ? stripIndent(post.content) : ""),
-    [post]
-  );
+  // Extract H2 headings for sidebar
+  const headings = useMemo(() => {
+    if (!post?.content) return [];
 
-const headings = useMemo(() => {
-  if (!post?.content) return [];
+    const doc = new DOMParser().parseFromString(post.content, "text/html");
+    const h2s = Array.from(doc.querySelectorAll("h2"));
 
-  // Create a DOM parser
-  const doc = new DOMParser().parseFromString(post.content, "text/html");
+    return h2s.map((h) => h.textContent.trim());
+  }, [post]);
 
-  // Select <h2> tags
-  const h2s = Array.from(doc.querySelectorAll("h2"));
-
-  return h2s.map((h) => h.textContent.trim());
-}, [post]);
-
+  // ---- Render ------------------------------------------------
 
   if (loading) {
     return (
@@ -174,21 +137,7 @@ const headings = useMemo(() => {
             href="/blog"
             className="inline-flex items-center gap-2 text-primary hover:underline"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m12 19-7-7 7-7" />
-              <path d="M19 12H5" />
-            </svg>
-            Back to blog
+            ← Back to blog
           </a>
         </div>
       </main>
@@ -204,103 +153,51 @@ const headings = useMemo(() => {
         <header className="relative overflow-hidden border-b border-border">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/10" />
           <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
+
             {/* Breadcrumbs */}
             <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-              <Link to="/" className="transition-colors hover:text-primary">
-                Home
-              </Link>
-              <span className="text-xs">/</span>
-              <Link to="/blog" className="transition-colors hover:text-primary">
-                Blog
-              </Link>
-              <span className="text-xs">/</span>
-              <span className="text-foreground">{post.category}</span>
+              <Link to="/" className="hover:text-primary">Home</Link>
+              <span>/</span>
+              <Link to="/blog" className="hover:text-primary">Blog</Link>
+              <span>/</span>
+              <span>{post.category}</span>
             </nav>
 
-            {/* Category badge */}
+            {/* Category */}
             <div className="mb-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 font-mono text-sm font-medium text-primary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                  <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z" />
-                </svg>
                 {post.category}
               </span>
             </div>
 
             {/* Title */}
-            <h1 className="mb-8 text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl text-balance">
+            <h1 className="mb-8 text-4xl font-bold md:text-5xl lg:text-6xl">
               {post.title}
             </h1>
 
             {/* Excerpt */}
             {post.excerpt && (
-              <p className="mb-10 max-w-2xl text-xl leading-relaxed text-muted-foreground text-pretty">
+              <p className="mb-10 max-w-2xl text-xl text-muted-foreground">
                 {post.excerpt}
               </p>
             )}
 
-            {/* Meta bar */}
+            {/* Meta */}
             <div className="flex flex-wrap items-center gap-6 border-t border-border pt-8">
-              {/* Avatar */}
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground text-lg font-bold">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
                   JC
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">JC</p>
+                  <p className="font-semibold">JC</p>
                   <p className="text-sm text-muted-foreground">Web Developer</p>
                 </div>
               </div>
 
               <div className="hidden h-8 w-px bg-border md:block" />
 
-              {/* Date */}
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                <span className="text-sm">{post.date}</span>
-              </div>
-
-              {/* Read time */}
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <span className="text-sm">{post.readTime}</span>
-              </div>
+              <span className="text-sm text-muted-foreground">{post.date}</span>
+              <span className="text-sm text-muted-foreground">{post.readTime}</span>
             </div>
           </div>
         </header>
@@ -308,106 +205,57 @@ const headings = useMemo(() => {
         {/* MAIN CONTENT + SIDEBAR */}
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
           <div className="grid gap-12 lg:grid-cols-[1fr_280px]">
+
             {/* Main content */}
             <div className="min-w-0">
-              <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-                <ReactMarkdown
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    h2: ({ node, ...props }) => (
-                      <h2
-                        {...props}
-                        className="mb-6 mt-16 text-2xl font-bold tracking-tight text-foreground first:mt-0 md:text-3xl"
-                      />
-                    ),
-                    p: ({ node, ...props }) => (
-                      <p
-                        {...props}
-                        className="mb-6 leading-relaxed text-muted-foreground"
-                      />
-                    ),
-                    li: ({ node, ...props }) => (
-                      <li
-                        {...props}
-                        className="mb-2 ml-4 list-disc text-muted-foreground marker:text-primary"
-                      />
-                    ),
-                  }}
-                >
-                  {cleanedContent}
-                </ReactMarkdown>
-              </div>
+              <div
+                className="prose prose-lg prose-slate dark:prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
 
-              {/* CTA box */}
-              <div className="mt-16 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-8 md:p-10">
-                <h3 className="mb-3 text-xl font-bold text-foreground">
-                  Ready to start your project?
-                </h3>
+              {/* CTA */}
+              <div className="mt-16 rounded-2xl border border-primary/20 p-10 bg-primary/5">
+                <h3 className="mb-3 text-xl font-bold">Ready to start your project?</h3>
                 <p className="mb-6 text-muted-foreground">
-                  If you found this helpful and need a website that actually
-                  works for your business, I&apos;d love to chat.
+                  If you need a website that actually works for your business, I'm ready.
                 </p>
                 <a
                   href="https://docs.google.com/forms/d/e/1FAIpQLSd1WgbA33GUhJsmRPUL43GUk-WPjyedbvb7iZy0py9uGdWgdw/viewform"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90"
                 >
-                  Start Your Project
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="9 18 15 12 9 6" />
-                  </svg>
+                  Start Your Project →
                 </a>
               </div>
             </div>
 
-            {/* Sidebar */}
+            {/* SIDEBAR */}
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-8">
-                {/* Topics (tags) */}
+
+                {/* Topics */}
                 {post.tags.length > 0 && (
                   <div className="rounded-xl border border-border bg-card p-6">
-                    <h3 className="mb-4 font-semibold text-foreground">
-                      Topics
-                    </h3>
+                    <h3 className="mb-4 font-semibold">Topics</h3>
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
                         <a
-  key={tag}
-  href={`/blog?tag=${encodeURIComponent(tag)}`}
-  className="
-    rounded-full
-    bg-primary/10
-    px-3 py-1
-    text-xs
-    font-medium
-    text-primary
-    transition-colors
-    hover:bg-primary/20
-  "
->
-  {tag}
-</a>
+                          key={tag}
+                          href={`/blog?tag=${encodeURIComponent(tag)}`}
+                          className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/20"
+                        >
+                          {tag}
+                        </a>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* In this article (headings) */}
+                {/* Headings */}
                 {headings.length > 0 && (
                   <div className="rounded-xl border border-border bg-card p-6">
-                    <h3 className="mb-4 font-semibold text-foreground">
-                      In this article
-                    </h3>
+                    <h3 className="mb-4 font-semibold">In this article</h3>
                     <nav className="space-y-2">
                       {headings.map((heading) => {
                         const id = slugifyHeading(heading);
@@ -415,7 +263,7 @@ const headings = useMemo(() => {
                           <a
                             key={id}
                             href={`#${id}`}
-                            className="block text-sm text-muted-foreground transition-colors hover:text-primary"
+                            className="block text-sm text-muted-foreground hover:text-primary"
                           >
                             {heading}
                           </a>
@@ -425,62 +273,33 @@ const headings = useMemo(() => {
                   </div>
                 )}
 
-                {/* Back to blog */}
                 <a
                   href="/blog"
-                  className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m12 19-7-7 7-7" />
-                    <path d="M19 12H5" />
-                  </svg>
-                  Back to all articles
+                  ← Back to all articles
                 </a>
               </div>
             </aside>
           </div>
         </div>
 
-        {/* CONTINUE READING (bottom) */}
+        {/* CONTINUE READING */}
         {relatedPosts.length > 0 && (
           <section className="border-t border-border bg-muted/30">
             <div className="mx-auto max-w-6xl px-6 py-20">
+
               <div className="mb-10 flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-                    Continue Reading
-                  </h2>
-                  <p className="mt-2 text-muted-foreground">
-                    More articles you might find helpful
-                  </p>
+                  <h2 className="text-2xl font-bold md:text-3xl">Continue Reading</h2>
+                  <p className="text-muted-foreground">More articles you might find helpful</p>
                 </div>
+
                 <Link
                   to="/blog"
-                  className="hidden items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary md:flex"
+                  className="hidden md:flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm hover:border-primary hover:text-primary"
                 >
-                  View all articles
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="9 18 15 12 9 6" />
-                  </svg>
+                  View all articles →
                 </Link>
               </div>
 
@@ -489,59 +308,28 @@ const headings = useMemo(() => {
                   <Link
                     key={rp.slug}
                     to={`/blog/${rp.slug}`}
-                    className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/50 hover:shadow-xl"
+                    className="group flex flex-col rounded-2xl border border-border bg-card p-6 hover:border-primary/50"
                   >
-                    <span className="mb-4 inline-flex w-fit items-center rounded-full bg-primary/10 px-3 py-1 font-mono text-xs font-medium text-primary">
+                    <span className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                       {rp.category}
                     </span>
-                    <h3 className="mb-3 text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+
+                    <h3 className="mb-3 text-lg font-semibold leading-snug group-hover:text-primary">
                       {rp.title}
                     </h3>
-                    <p className="mb-6 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                      {rp.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between border-t border-border pt-4">
-                      <span className="text-xs text-muted-foreground">
-                        {rp.readTime}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                        Read more
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </span>
-                    </div>
+
+                    <p className="mb-6 text-sm text-muted-foreground line-clamp-2">{rp.excerpt}</p>
+
+                    <span className="text-xs text-muted-foreground">{rp.readTime}</span>
                   </Link>
                 ))}
               </div>
 
-              {/* Mobile "View all" button */}
               <Link
                 to="/blog"
-                className="mt-8 flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary md:hidden"
+                className="mt-8 flex md:hidden items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm hover:border-primary hover:text-primary"
               >
-                View all articles
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                View all articles →
               </Link>
             </div>
           </section>
