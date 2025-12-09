@@ -51,14 +51,21 @@ export function BlogPostCard({
           {/* TAGS */}
           <div className="flex flex-wrap gap-1.5">
             {tags?.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 
-                           font-mono text-xs text-muted-foreground transition-colors 
-                           hover:bg-primary/10 hover:text-primary"
-              >
-                {tag}
-              </span>
+           <span
+  key={tag}
+  className="
+    inline-flex items-center
+    rounded-full
+    border border-border
+    px-2 py-0.5
+    font-mono text-xs
+    text-muted-foreground
+    hover:border-primary hover:text-primary
+    transition-colors
+  "
+>
+  {tag}
+</span>
             ))}
           </div>
         </CardContent>
