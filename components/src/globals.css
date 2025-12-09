@@ -50,7 +50,7 @@
 
   /* Large section headings (H2) */
   .blog-content h2 {
-    @apply text-3xl font-bold leading-tight mt-12 mb-4;
+    @apply text-xl font-bold leading-tight mt-12 mb-4;
   }
 
   /* Subheadings (H3) */
