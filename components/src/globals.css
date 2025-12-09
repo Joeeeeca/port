@@ -9,7 +9,7 @@
 @theme {
   --color-background: hsl(0, 0%, 100%);
   --color-background-card: hsl(0, 0%, 98%);
-  --color-border: hsl(0, 0%, 85%); /* ✅ soft neutral border */
+  --color-border: hsl(0, 0%, 85%);
   --color-foreground: hsl(222, 10%, 10%);
   --color-muted-foreground: hsl(222, 10%, 40%);
   --color-accent: hsl(270, 95%, 60%);
@@ -20,7 +20,7 @@
 .dark {
   --color-background: hsl(222, 10%, 8%);
   --color-background-card: hsl(222, 10%, 12%);
-  --color-border: hsl(222, 10%, 25%); /* ✅ softer dark border */
+  --color-border: hsl(222, 10%, 25%);
   --color-foreground: hsl(210, 20%, 98%);
   --color-muted-foreground: hsl(210, 10%, 70%);
   --color-accent: hsl(270, 95%, 70%);
@@ -34,5 +34,57 @@
 
   body {
     @apply bg-background text-foreground min-h-screen antialiased;
+  }
+}
+
+/* ------------------------------------------------------------
+   ✨ V0–STYLE BLOG TYPOGRAPHY
+   Matches clean spacing + section rhythm from the screenshots
+------------------------------------------------------------- */
+@layer components {
+
+  /* Main content wrapper */
+  .blog-content {
+    @apply max-w-3xl text-[17px] leading-relaxed;
+  }
+
+  /* Large section headings (H2) */
+  .blog-content h2 {
+    @apply text-3xl font-bold leading-tight mt-12 mb-4;
+  }
+
+  /* Subheadings (H3) */
+  .blog-content h3 {
+    @apply text-2xl font-semibold mt-10 mb-3;
+  }
+
+  /* Paragraphs */
+  .blog-content p {
+    @apply mb-6;
+  }
+
+  /* Lists */
+  .blog-content ul,
+  .blog-content ol {
+    @apply my-6 pl-6;
+  }
+
+  .blog-content li {
+    @apply mb-2;
+  }
+
+  /* Strong text */
+  .blog-content strong {
+    @apply font-semibold;
+  }
+
+  /* Images inside blog content */
+  .blog-content img {
+    @apply my-10 rounded-xl max-w-full block;
+  }
+
+  /* CTA spacing */
+  .blog-cta {
+    @apply mt-16;
   }
 }
