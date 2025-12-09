@@ -50,7 +50,7 @@ export function ContactSection() {
           <div className="flex items-center justify-center gap-4">
             <div className="flex-1 h-px  max-w-xs hidden md:block bg-gray-800" />
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              <span className="text-accent font-mono text-xl md:text-2xl">04.</span> Get In Touch
+              <span className="text-accent font-mono text-xl md:text-2xl">06.</span> Get In Touch
             </h2>
             <div className="flex-1 h-px  max-w-xs hidden md:block bg-gray-800" />
           </div>
