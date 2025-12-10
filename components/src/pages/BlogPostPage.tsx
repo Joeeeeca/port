@@ -33,10 +33,12 @@ function mapRecordToUi(record: any): UiPost {
   const content = String(record.content || "");
 
   // Inject IDs into <h2> for potential future ToC / deep links
-  const withIds = content.replace(/<h2>(.*?)<\/h2>/g, (match, text) => {
-    const id = slugifyHeading(text);
-    return `<h2 id="${id}">${text}</h2>`;
-  });
+const withIds = content.replace(/<h2[^>]*>(.*?)<\/h2>/g, (_, text) => {
+  const cleanText = text.replace(/<[^>]+>/g, "").trim();
+  const id = slugifyHeading(cleanText);
+  return `<h2 id="${id}">${text}</h2>`;
+});
+
 
   return {
     slug: record.slugs || record.slug || record.id,
@@ -110,15 +112,14 @@ export default function BlogPostPage() {
 const toc = useMemo(() => {
   if (!post?.content) return [];
 
-  const matches = [
-    ...post.content.matchAll(/<h2 id="([^"]*)">([\s\S]*?)<\/h2>/g),
-  ];
+  const matches = [...post.content.matchAll(/<h2[^>]*id="([^"]+)"[^>]*>(.*?)<\/h2>/g)];
 
   return matches.map((m) => ({
     id: m[1],
-    text: m[2].replace(/<[^>]+>/g, "").trim(),
+    text: m[2].replace(/<[^>]+>/g, "").trim(), // remove HTML tags
   }));
 }, [post]);
+
 
   // ---- Render ------------------------------------------------
 
