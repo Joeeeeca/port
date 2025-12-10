@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-type TocItem = { id: string; text: string };
+export type TocItem = { id: string; text: string };
 
 export function TableOfContents({ items }: { items: TocItem[] }) {
   if (!items.length) return null;
@@ -16,12 +16,12 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         On this page
       </h3>
 
-      <ul className="space-y-3 text-sm">
+      <ul className="space-y-3">
         {items.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-sm text-primary hover:underline"
             >
               {item.text}
             </a>
