@@ -318,43 +318,42 @@ const toc = useMemo(() => {
             </motion.div>
 
             {/* Sidebar */}
-    <motion.aside
+<motion.aside
   initial={{ opacity: 0, x: 24 }}
   animate={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
   className="hidden lg:block h-full"
 >
-  <div className="relative h-full">
-    
-    {/* TOC */}
+  <div className="relative h-full flex flex-col gap-6">
+
+    {/* Sticky TOC */}
     <div className="sticky top-28">
       <TableOfContents items={toc} />
     </div>
 
-    {/* TOPICS — BELOW TOC */}
-    <div className="sticky top-[350px] mt-8">
-      {post.tags.length > 0 && (
-        <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Topics
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <Link
-                key={tag}
-                to={`/blog?tag=${encodeURIComponent(tag)}`}
-                className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20"
-              >
-                {tag}
-              </Link>
-            ))}
-          </div>
+    {/* Topics - NOT sticky */}
+    {post.tags.length > 0 && (
+      <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
+        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Topics
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <Link
+              key={tag}
+              to={`/blog?tag=${encodeURIComponent(tag)}`}
+              className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary/20"
+            >
+              {tag}
+            </Link>
+          ))}
         </div>
-      )}
-    </div>
+      </div>
+    )}
 
   </div>
 </motion.aside>
+
           </div>
         </section>
 
