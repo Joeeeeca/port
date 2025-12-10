@@ -32,18 +32,12 @@ type UiPost = {
 function mapRecordToUi(record: any): UiPost {
   const content = String(record.content || "");
 
-// 1️⃣ Convert <strong>Heading</strong> into <h2>Heading</h2>
-const normalized = content.replace(/<strong>(.*?)<\/strong>/g, (_, text) => {
-  const clean = text.replace(/<[^>]+>/g, "").trim();
-  return `<h2>${clean}</h2>`;
-});
-
-// 2️⃣ Now inject IDs into <h2>
-const withIds = normalized.replace(/<h2>(.*?)<\/h2>/g, (_, text) => {
-  const id = slugifyHeading(text.trim());
-  return `<h2 id="${id}">${text}</h2>`;
-});
-
+  // Inject IDs into <h3> headings
+  const withIds = content.replace(/<h3[^>]*>(.*?)<\/h3>/g, (_, text) => {
+    const cleanText = text.replace(/<[^>]+>/g, "").trim(); // strip any nested tags
+    const id = slugifyHeading(cleanText);
+    return `<h3 id="${id}">${text}</h3>`;
+  });
 
   return {
     slug: record.slugs || record.slug || record.id,
@@ -65,6 +59,7 @@ const withIds = normalized.replace(/<h2>(.*?)<\/h2>/g, (_, text) => {
       : [],
   };
 }
+
 
 // ---- Component ----------------------------------------------
 
@@ -117,11 +112,13 @@ export default function BlogPostPage() {
 const toc = useMemo(() => {
   if (!post?.content) return [];
 
-  const matches = [...post.content.matchAll(/<h2[^>]*id="([^"]+)"[^>]*>(.*?)<\/h2>/g)];
+  const matches = [
+    ...post.content.matchAll(/<h3[^>]*id="([^"]+)"[^>]*>(.*?)<\/h3>/g),
+  ];
 
   return matches.map((m) => ({
     id: m[1],
-    text: m[2].replace(/<[^>]+>/g, "").trim(), // remove HTML tags
+    text: m[2].replace(/<[^>]+>/g, "").trim(), // remove any nested tags
   }));
 }, [post]);
 
