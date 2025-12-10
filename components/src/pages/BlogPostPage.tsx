@@ -322,7 +322,7 @@ const toc = useMemo(() => {
   initial={{ opacity: 0, x: 24 }}
   animate={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-  className="hidden lg:block"
+  className="hidden lg:block h-full"
 >
   {/* This wrapper is the ONLY sticky element */}
   <div className="sticky top-28 space-y-6">
