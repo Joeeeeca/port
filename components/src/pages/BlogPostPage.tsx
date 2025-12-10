@@ -322,16 +322,15 @@ const toc = useMemo(() => {
   initial={{ opacity: 0, x: 24 }}
   animate={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-  className="hidden lg:block h-full"
+  className="hidden lg:block"
 >
-  <div className="relative h-full flex flex-col gap-6">
+  {/* This wrapper is the ONLY sticky element */}
+  <div className="sticky top-28 space-y-6">
 
-    {/* Sticky TOC */}
-    <div className="sticky top-28">
-      <TableOfContents items={toc} />
-    </div>
+    {/* TOC */}
+    <TableOfContents items={toc} />
 
-    {/* Topics - NOT sticky */}
+    {/* TOPICS */}
     {post.tags.length > 0 && (
       <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
@@ -353,6 +352,7 @@ const toc = useMemo(() => {
 
   </div>
 </motion.aside>
+
 
           </div>
         </section>
