@@ -110,11 +110,13 @@ export default function BlogPostPage() {
 const toc = useMemo(() => {
   if (!post?.content) return [];
 
-  const matches = [...post.content.matchAll(/<h2 id="([^"]*)">(.*?)<\/h2>/g)];
+  const matches = [
+    ...post.content.matchAll(/<h2 id="([^"]*)">([\s\S]*?)<\/h2>/g),
+  ];
 
   return matches.map((m) => ({
     id: m[1],
-    text: m[2],
+    text: m[2].replace(/<[^>]+>/g, "").trim(),
   }));
 }, [post]);
 
