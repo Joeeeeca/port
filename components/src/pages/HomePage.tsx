@@ -6,10 +6,12 @@ import { MyStorySection } from "../../my-story-section";
 import { ServicesSection } from "../../services-section";
 import { ContactSection } from "../../contact-section";
 import { ThemeToggle } from "../../theme-toggle";
+import { PageTransition } from "../../ui/PageTransition";
 
 export default function HomePage() {
   return (
-    <main>
+<PageTransition>
+<main>
       <Navbar />
       <HeroSection />
       <ProjectsSection />
@@ -19,5 +21,6 @@ export default function HomePage() {
       <ContactSection />
       <ThemeToggle />
     </main>
+    </PageTransition>
   );
 }

@@ -5,6 +5,7 @@ import { BlogPostCard } from "../../blog/blog-post-card";
 import { TagFilter } from "../blog/tag-filter";
 import { fetchBlogPosts, fetchAllTags } from "../blog/blog-data";
 import type { BlogPost } from "../blog/blog-data";
+import { PageTransition } from "../../ui/PageTransition";
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -46,6 +47,7 @@ const mappedPosts = filtered.map((p) => ({
 }));
 
   return (
+    <PageTransition>
     <main className="min-h-screen bg-background">
       <Navbar />
 
@@ -90,5 +92,6 @@ const mappedPosts = filtered.map((p) => ({
         </section>
       </div>
     </main>
+    </PageTransition>
   );
 }

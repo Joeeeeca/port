@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 import { motion } from "framer-motion";
+import { PageTransition } from "../../ui/PageTransition";
 
 // ---- Helpers ------------------------------------------------
 
@@ -116,6 +118,45 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-background text-foreground">
+
+    {/* SEO for this blog post */}
+    {post && (
+  <Helmet>
+    <title>{post.title} | Joe Capon Designs</title>
+    <meta name="description" content={post.excerpt || post.title} />
+
+    <link
+      rel="canonical"
+      href={`https://joecapondesigns.com/blog/${post.slug}`}
+    />
+
+    {/* OpenGraph */}
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={post.title} />
+    <meta property="og:description" content={post.excerpt || post.title} />
+    <meta
+      property="og:url"
+      content={`https://joecapondesigns.com/blog/${post.slug}`}
+    />
+    <meta
+      property="og:image"
+      content={`https://joecapondesigns.com/api/og/${post.slug}.png`}
+    />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={post.title} />
+    <meta
+      name="twitter:description"
+      content={post.excerpt || post.title}
+    />
+    <meta
+      name="twitter:image"
+      content={`https://joecapondesigns.com/api/og/${post.slug}.png`}
+    />
+  </Helmet>
+)}
+
         <Navbar />
         <div className="pt-32 text-center text-muted-foreground">
           Loading post...
@@ -144,6 +185,7 @@ export default function BlogPostPage() {
   }
 
   return (
+     <PageTransition>
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
 
@@ -375,5 +417,6 @@ export default function BlogPostPage() {
         )}
       </article>
     </main>
+    </PageTransition>
   );
 }
