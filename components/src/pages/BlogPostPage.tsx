@@ -5,6 +5,7 @@ import { Navbar } from "../../navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 import { motion } from "framer-motion";
 import { PageTransition } from "../../ui/PageTransition";
+import { ReadingProgress } from "../../ui/ReadingProgress";
 
 // ---- Helpers ------------------------------------------------
 
@@ -187,6 +188,7 @@ export default function BlogPostPage() {
   return (
      <PageTransition>
     <main className="min-h-screen bg-background text-foreground">
+      <ReadingProgress />
       <Navbar />
 
       <article className="pt-16">

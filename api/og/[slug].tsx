@@ -6,22 +6,36 @@ export const config = {
 
 const PB_URL = "https://portfolio-cms-production-ea4c.up.railway.app";
 
-// Fetch a post by its `slugs` field
-async function getPost(slug: string) {
+// Explicit PocketBase result type (fixes TS errors)
+type PBListResponse<T> = {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  items: T[];
+};
+
+type PostRecord = {
+  id: string;
+  title: string;
+  category?: string;
+  slugs?: string;
+  excerpt?: string;
+  created: string;
+};
+
+// Fetch a post by its slug
+async function getPost(slug: string): Promise<PostRecord | null> {
   const res = await fetch(
     `${PB_URL}/api/collections/posts/records?filter=slugs='${slug}'`,
     { cache: "no-store" }
   );
 
-  if (!res.ok) {
-    return null;
-  }
+  if (!res.ok) return null;
 
-  const data = await res.json();
+  const data = (await res.json()) as PBListResponse<PostRecord>;
 
-  if (!data?.items || data.items.length === 0) {
-    return null;
-  }
+  if (!data.items || data.items.length === 0) return null;
 
   return data.items[0];
 }
@@ -54,12 +68,12 @@ export default async function handler(req: Request) {
             flexDirection: "column",
             justifyContent: "center",
             padding: "60px",
-            background:
-              "linear-gradient(to bottom right, #0f172a, #1e293b)",
+            background: "linear-gradient(to bottom right, #0f172a, #1e293b)",
             color: "white",
             fontFamily: "Inter",
           }}
         >
+          {/* CATEGORY */}
           <div
             style={{
               fontSize: 32,
@@ -70,6 +84,7 @@ export default async function handler(req: Request) {
             {category}
           </div>
 
+          {/* TITLE */}
           <div
             style={{
               fontSize: 64,
@@ -81,6 +96,7 @@ export default async function handler(req: Request) {
             {title}
           </div>
 
+          {/* AUTHOR */}
           <div
             style={{
               marginTop: 40,
