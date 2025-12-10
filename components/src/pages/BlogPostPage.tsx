@@ -6,6 +6,7 @@ import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 import { motion } from "framer-motion";
 import { PageTransition } from "../../ui/PageTransition";
 import { ReadingProgress } from "../../ui/ReadingProgress";
+import { TableOfContents } from "../blog/TableofContents";
 
 // ---- Helpers ------------------------------------------------
 
@@ -106,13 +107,16 @@ export default function BlogPostPage() {
     load();
   }, [slug]);
 
-  // In case you want headings later (kept but unused for now)
-  const headings = useMemo(() => {
-    if (!post?.content) return [];
+const toc = useMemo(() => {
+  if (!post?.content) return [];
 
-    const matches = post.content.match(/<h2[^>]*>(.*?)<\/h2>/g) || [];
-    return matches.map((h) => h.replace(/<[^>]+>/g, "").trim());
-  }, [post]);
+  const matches = [...post.content.matchAll(/<h2 id="([^"]*)">(.*?)<\/h2>/g)];
+
+  return matches.map((m) => ({
+    id: m[1],
+    text: m[2],
+  }));
+}, [post]);
 
   // ---- Render ------------------------------------------------
 
@@ -316,6 +320,10 @@ export default function BlogPostPage() {
               className="hidden lg:block"
             >
               <div className="sticky top-28 space-y-6">
+
+                  {/* TABLE OF CONTENTS */}
+  <TableOfContents items={toc} />
+
                 {/* Topics */}
                 {post.tags.length > 0 && (
                   <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
