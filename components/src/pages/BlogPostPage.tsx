@@ -324,10 +324,12 @@ const toc = useMemo(() => {
               transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
               className="hidden lg:block"
             >
-              <div className="sticky top-28 space-y-6">
+              <div className="space-y-6">
 
                   {/* TABLE OF CONTENTS */}
-  <TableOfContents items={toc} />
+  <div className="sticky top-28">
+    <TableOfContents items={toc} />
+  </div>
 
                 {/* Topics */}
                 {post.tags.length > 0 && (
