@@ -283,7 +283,7 @@ const toc = useMemo(() => {
 
         {/* BODY + SIDEBAR ----------------------------------------------- */}
         <section className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <div className="grid gap-12 lg:grid-cols-[1fr_280px] items-start">
             {/* Main content */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -318,22 +318,21 @@ const toc = useMemo(() => {
             </motion.div>
 
             {/* Sidebar */}
-     <motion.aside
+    <motion.aside
   initial={{ opacity: 0, x: 24 }}
   animate={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-  className="hidden lg:block"
+  className="hidden lg:block h-full"
 >
-  <div className="space-y-10">
-
-    {/* --- TOC --- */}
+  <div className="relative h-full">
+    
+    {/* TOC */}
     <div className="sticky top-28">
       <TableOfContents items={toc} />
     </div>
 
-    {/* --- TOPICS --- */}
-    <div className="sticky top-[380px]"> 
-      {/* Adjust this number until Topics sits nicely */}
+    {/* TOPICS — BELOW TOC */}
+    <div className="sticky top-[350px] mt-8">
       {post.tags.length > 0 && (
         <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
@@ -356,7 +355,6 @@ const toc = useMemo(() => {
 
   </div>
 </motion.aside>
-
           </div>
         </section>
 
