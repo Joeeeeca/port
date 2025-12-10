@@ -318,22 +318,22 @@ const toc = useMemo(() => {
             </motion.div>
 
             {/* Sidebar */}
-           <motion.aside
+     <motion.aside
   initial={{ opacity: 0, x: 24 }}
   animate={{ opacity: 1, x: 0 }}
   transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
   className="hidden lg:block"
 >
-  <div className="space-y-6">
+  <div className="space-y-10">
 
-    {/* Table of Contents - sticky */}
+    {/* --- TOC --- */}
     <div className="sticky top-28">
       <TableOfContents items={toc} />
     </div>
 
-    {/* Topics box - sticky with its own offset */}
-    <div className="sticky top-[420px]"> 
-      {/* adjust the value until perfect */}
+    {/* --- TOPICS --- */}
+    <div className="sticky top-[380px]"> 
+      {/* Adjust this number until Topics sits nicely */}
       {post.tags.length > 0 && (
         <div className="rounded-2xl border border-border bg-card/80 p-6 backdrop-blur">
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
