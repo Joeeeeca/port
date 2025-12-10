@@ -32,10 +32,15 @@ type UiPost = {
 function mapRecordToUi(record: any): UiPost {
   const content = String(record.content || "");
 
-  // Inject IDs into <h2> for potential future ToC / deep links
-const withIds = content.replace(/<h2[^>]*>(.*?)<\/h2>/g, (_, text) => {
-  const cleanText = text.replace(/<[^>]+>/g, "").trim();
-  const id = slugifyHeading(cleanText);
+// 1️⃣ Convert <strong>Heading</strong> into <h2>Heading</h2>
+const normalized = content.replace(/<strong>(.*?)<\/strong>/g, (_, text) => {
+  const clean = text.replace(/<[^>]+>/g, "").trim();
+  return `<h2>${clean}</h2>`;
+});
+
+// 2️⃣ Now inject IDs into <h2>
+const withIds = normalized.replace(/<h2>(.*?)<\/h2>/g, (_, text) => {
+  const id = slugifyHeading(text.trim());
   return `<h2 id="${id}">${text}</h2>`;
 });
 
