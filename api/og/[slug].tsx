@@ -1,9 +1,30 @@
 import { ImageResponse } from "@vercel/og";
-import { fetchBlogPost } from "../../components/src/blog/blog-data";
 
 export const config = {
   runtime: "edge",
 };
+
+const PB_URL = "https://portfolio-cms-production-ea4c.up.railway.app";
+
+// Fetch a post by its `slugs` field
+async function getPost(slug: string) {
+  const res = await fetch(
+    `${PB_URL}/api/collections/posts/records?filter=slugs='${slug}'`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    return null;
+  }
+
+  const data = await res.json();
+
+  if (!data?.items || data.items.length === 0) {
+    return null;
+  }
+
+  return data.items[0];
+}
 
 export default async function handler(req: Request) {
   try {
@@ -14,7 +35,7 @@ export default async function handler(req: Request) {
       return new Response("Missing slug", { status: 400 });
     }
 
-    const post = await fetchBlogPost(slug);
+    const post = await getPost(slug);
 
     if (!post) {
       return new Response("Post not found", { status: 404 });
@@ -31,17 +52,17 @@ export default async function handler(req: Request) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            padding: "60px",
-            background: "linear-gradient(to bottom right, #0f172a, #1e293b)",
-            color: "white",
             justifyContent: "center",
+            padding: "60px",
+            background:
+              "linear-gradient(to bottom right, #0f172a, #1e293b)",
+            color: "white",
             fontFamily: "Inter",
           }}
         >
-          {/* CATEGORY LABEL */}
           <div
             style={{
-              fontSize: 24,
+              fontSize: 32,
               opacity: 0.7,
               marginBottom: 20,
             }}
@@ -49,7 +70,6 @@ export default async function handler(req: Request) {
             {category}
           </div>
 
-          {/* TITLE */}
           <div
             style={{
               fontSize: 64,
@@ -61,7 +81,6 @@ export default async function handler(req: Request) {
             {title}
           </div>
 
-          {/* AUTHOR MARK */}
           <div
             style={{
               marginTop: 40,
@@ -78,9 +97,7 @@ export default async function handler(req: Request) {
         height: 630,
       }
     );
-  } catch (e) {
-    return new Response("Something went wrong: " + e, {
-      status: 500,
-    });
+  } catch (err) {
+    return new Response("Error: " + String(err), { status: 500 });
   }
 }
