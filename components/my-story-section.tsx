@@ -72,7 +72,9 @@ export function MyStorySection() {
 
           {/* What I Do Now */}
           <div className="space-y-6">
+            <StaggerFadeUp>
             <h3 className="text-xl font-semibold text-foreground">Fast-forward to today and I now help clients:</h3>
+            </StaggerFadeUp>
             <div className="space-y-4">
  {offerings.map((offering, index) => (
   <StaggerFadeUp key={index} delay={index * 0.12}>

@@ -5,6 +5,9 @@
 
 @import "tailwindcss";
 
+@import "@fontsource-variable/inter/index.css";
+@import "@fontsource/poppins/latin.css";
+
 /* 🌞 Default (light mode) */
 @theme {
   --color-background: hsl(0, 0%, 100%);
@@ -14,6 +17,16 @@
   --color-muted-foreground: hsl(222, 10%, 40%);
   --color-accent: hsl(270, 95%, 60%);
   --color-primary: hsl(210, 90%, 55%);
+  --font-sans: "InterVariable", "Inter", sans-serif;
+  --font-heading: "Poppins", sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+p {
+    font-family: var(--font-sans);
 }
 
 /* 🌙 Dark mode overrides */

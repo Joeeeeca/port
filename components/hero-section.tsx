@@ -52,7 +52,7 @@ export function HeroSection() {
             <a href="#projects" className="mx-auto lg:mx-0">
          <Button
   size="lg"
-  className="bg-transparent border-2 border-accent text-accent hover:bg-accent/10 hover:text-[#fff] dark:text-accent dark:border-accent text-primary border-primary mx-auto lg:mx-0 cursor-pointer"
+  className="bg-transparent border-2 hover:bg-accent/10 hover:text-[#fff] dark:text-accent dark:border-accent text-primary border-primary mx-auto lg:mx-0 cursor-pointer"
 >
   View My Work
 </Button>

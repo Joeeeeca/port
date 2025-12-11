@@ -13,10 +13,12 @@ import {
 
 import {
   FadeSlideUp,
-  StaggerFadeUp,
   FadeZoomIn,
   RevealExpand
 } from "./src/animations/SectionAnimations"
+
+import { StaggerParent } from "./src/animations/StaggerParent"
+import { StaggerItem } from "./src/animations/StaggerItem"
 
 const packages = [
   {
@@ -114,22 +116,24 @@ export function ServicesSection() {
             </h3>
           </FadeSlideUp>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {packages.map((pkg, index) => (
-  <StaggerFadeUp key={pkg.title} delay={index * 0.12}>
-    <Card
-      className="h-full p-6 bg-card/50 backdrop-blur-sm border-border 
-      hover:border-accent/50 transition-all duration-300 group hover:-translate-y-1"
-    >
-      <pkg.icon className="w-10 h-10 text-accent mb-4 group-hover:scale-110 transition-transform" />
-      <h4 className="font-semibold text-foreground text-lg mb-1">{pkg.title}</h4>
-      <p className="text-accent font-mono text-xl font-bold mb-3">{pkg.price}</p>
-      <p className="text-sm text-muted-foreground leading-relaxed">{pkg.description}</p>
-    </Card>
-  </StaggerFadeUp>
-))}
-
-          </div>
+ <StaggerParent>
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {packages.map((pkg) => (
+      <StaggerItem key={pkg.title}>
+        <Card
+          className="h-full p-6 bg-card/50 backdrop-blur-sm border-border 
+          hover:border-accent/50 transition-all duration-300 group hover:-translate-y-1"
+        >
+          <pkg.icon className="w-10 h-10 text-accent mb-4 group-hover:scale-110 transition-transform" />
+          <h4 className="font-semibold text-foreground text-lg mb-1">{pkg.title}</h4>
+          <p className="text-accent font-mono text-xl font-bold mb-3">{pkg.price}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{pkg.description}</p>
+        </Card>
+      </StaggerItem>
+    ))}
+ 
+</div>
+ </StaggerParent>
         </div>
 
         {/* My Process */}
