@@ -83,14 +83,14 @@ export function AboutSection() {
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
                     I’m Joe, a 25-year-old junior web developer with a passion
-                    for creativity and continuous learning...
+                    for creativity and continuous learning
                   </p>
                   <p>
                     Whether I’m prototyping in Figma, optimizing performance, or
-                    writing accessible markup...
+                    writing accessible markup
                   </p>
                   <p>
-                    Interested in working together? Click the button below…
+                    Interested in working together? Click the button below
                   </p>
                 </div>
 

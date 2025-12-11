@@ -16,7 +16,7 @@ const projects = [
   {
     title: "Guitar Lessons Website",
     description:
-      "A custom-built marketing website for a professional guitar teacher. The site includes structured SEO, fast page performance (99+ Lighthouse), accessibility features, and a clean, mobile-first UI.",
+      "A custom-built marketing website for a professional guitar teacher. The site includes structured SEO, fast page performance (99+ Lighthouse), accessibility features, and a clean, mobile-first UI. It helps students learn about lesson options and easily contact the teacher to book sessions.",
     technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion", "TypeScript"],
     githubUrl: "https://github.com/Joeeeeca/guitar-lessons-site",
     liveUrl: "https://joeeeeca.github.io/guitar-lessons-site/",
@@ -25,52 +25,52 @@ const projects = [
       before:
         "The client had an unresponsive Wix site with broken links, poor navigation, and no SEO structure.",
       after:
-        "I rebuilt the entire site into a clean, responsive, high-performance website with structured SEO and 99+ Lighthouse scores.",
+        "I rebuilt the entire site into a clean, responsive, high-performance website with optimized SEO, structured content, and 99+ Lighthouse scores. The new design improves usability and makes it easier for students to book lessons.",
     },
   },
   {
     title: "Sports Mindset Website",
     description:
-      "A clean, structured website for a mindset coach helping athletes overcome performance anxiety and mental barriers.",
+      "A modern and approachable website designed for a sports mindset coach who helps athletes overcome performance anxiety, self-doubt, and mental barriers. The site presents the coach’s services, courses, testimonials, and contact options in a clear, structured layout to improve engagement and encourage enquiries.",
     technologies: ["React", "Vite", "Tailwind CSS", "React Helmet", "TypeScript"],
     githubUrl: "https://github.com/Joeeeeca/sportsmindmastered",
     liveUrl: "https://sportsmindmastered.com/",
     image: project2,
     results: {
       before:
-        "The original site was basically a Word document shoved into a webpage with no design or structure.",
+        "The original “website” was essentially a text-heavy Word document crammed into a few pages — no design, no branding, no visual hierarchy.",
       after:
-        "I created full branding, a new logo, visuals, video integration, and a structured layout that drives enquiries.",
+        "I created a full brand direction with a calm, approachable theme, designed a new logo, added engaging visuals and videos, and built a clear layout with a working contact form. The new site presents the coach professionally and encourages enquiries.",
     },
   },
   {
     title: "Christmas Lights Display Website",
     description:
-      "A joyful, holiday-themed website to promote a Christmas lights display and help raise money for charity.",
+      "A cheerful, holiday-themed website built to promote a local Christmas lights display and raise donations for charity. The site features animated snow, bright seasonal visuals, and clear calls-to-action guiding visitors to learn more or plan a visit. Designed to be simple, joyful, and mobile-friendly, it helps spread holiday cheer while supporting a good cause.",
     technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion", "Decap CMS"],
     githubUrl: "https://github.com/Joeeeeca/Christmas",
     liveUrl: "https://highfieldroadchristmaslights.com",
     image: project3,
     results: {
       before:
-        "All the information only existed on a Facebook page, causing confusion.",
+        "The project existed only as a Facebook page, which made it hard for visitors to find information or donate.",
       after:
-        "I built a joyful, mobile-friendly website with animated snow, clear content, and donation improvements.",
+        "I designed a joyful, mobile-friendly website with animated snow, clear information sections, and simple call-to-actions. Visitors can now easily learn about the event and donate, greatly improving clarity and engagement.",
     },
   },
   {
     title: "FitCore Personal Trainer Website",
     description:
-      "A high-energy fitness brand website built for conversions, mobile-first responsiveness, and client trust.",
+      "A high-energy, conversion-focused website built for a personal training brand. The site showcases services, transformations, and client results through a clean, modern design with strong visual hierarchy. Structured sections, compelling CTAs, and mobile-first responsiveness help personal trainers attract more clients and build trust with visitors.",
     technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion", "TypeScript"],
     githubUrl: "https://github.com/Joeeeeca/FitCore",
     liveUrl: "https://your-live-url.com",
     image: project4,
     results: {
       before:
-        "Most PTs rely on Instagram or basic link-in-bio pages which lack structure and clarity.",
+        "Personal trainers often rely on Instagram pages or simple link-in-bio sites that make it difficult to clearly present services, pricing, transformations, and their coaching approach.",
       after:
-        "I built a bold, modern site with structured services, transformations, testimonials, and multiple CTAs.",
+        "I built a full-featured fitness website with a bold hero section, structured services, transformation gallery, testimonials, and multiple conversion points. The design is responsive, fast, and optimized for a professional client experience — helping trainers turn visitors into paying clients.",
     },
   },
 ];
@@ -104,8 +104,7 @@ export function ProjectsSection() {
               </div>
 
               <p className="text-muted-foreground text-lg max-w-2xl text-pretty mx-auto lg:mx-0">
-                A curated selection of websites I’ve built for real clients —
-                each focused on performance, clarity, and professionalism.
+                Here are some of my recent projects that showcase my skills and experience in web development.
               </p>
             </div>
           </FadeZoom>
