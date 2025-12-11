@@ -145,35 +145,36 @@ export function AboutSection() {
               </div>
             </SlideLR>
 
-            {/* ⭐ Stats card (slides from right) */}
-            <SlideLR direction="right" delay={0.35}>
-              <div className="hidden lg:flex absolute right-0 top-[75%] -translate-y-1/4 w-[45%] justify-end">
-                <Card className="p-6 bg-gradient-to-br from-accent/10 to-primary/5 border-accent/20 w-full shadow-lg">
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <div className="text-3xl font-bold text-accent font-mono">2+</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        Years Experience
-                      </div>
-                    </div>
+           {/* ⭐ Stats card — now correctly positioned below highlights */}
+<SlideLR direction="right" delay={0.35}>
+  <div className="lg:col-span-2 flex justify-center lg:justify-end mt-8">
+    <Card className="p-6 bg-gradient-to-br from-accent/10 to-primary/5 
+                    border-accent/20 w-full max-w-xl shadow-lg rounded-xl">
+      <div className="grid grid-cols-3 gap-4 text-center">
+        <div>
+          <div className="text-3xl font-bold text-accent font-mono">2+</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Years Experience
+          </div>
+        </div>
 
-                    <div>
-                      <div className="text-3xl font-bold text-accent font-mono">10+</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        Projects Completed
-                      </div>
-                    </div>
+        <div>
+          <div className="text-3xl font-bold text-accent font-mono">10+</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Projects Completed
+          </div>
+        </div>
 
-                    <div>
-                      <div className="text-3xl font-bold text-accent font-mono">5+</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        Happy Clients
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            </SlideLR>
+        <div>
+          <div className="text-3xl font-bold text-accent font-mono">5+</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Happy Clients
+          </div>
+        </div>
+      </div>
+    </Card>
+  </div>
+</SlideLR>
           </div>
         </div>
       </section>
