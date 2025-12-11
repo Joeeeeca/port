@@ -1,5 +1,6 @@
-import { Card } from "./ui/card"
-import { Button } from "./ui/buttons"
+import { Card } from "./ui/card";
+import { Button } from "./ui/buttons";
+
 import {
   Globe,
   RefreshCw,
@@ -9,16 +10,15 @@ import {
   MessageSquare,
   Rocket,
   ArrowRight,
-} from "lucide-react"
+} from "lucide-react";
 
 import {
-  FadeSlideUp,
-  FadeZoomIn,
-  RevealExpand
-} from "./src/animations/SectionAnimations"
-
-import { StaggerParent } from "./src/animations/StaggerParent"
-import { StaggerItem } from "./src/animations/StaggerItem"
+  FadeUp,
+  FadeZoom,
+  RevealExpand,
+  StaggerParent,
+  StaggerItem,
+} from "./src/animations/SectionAnimations";
 
 const packages = [
   {
@@ -49,7 +49,7 @@ const packages = [
     description:
       "Ongoing maintenance, updates, and technical support to keep things running smoothly.",
   },
-]
+];
 
 const processSteps = [
   {
@@ -80,22 +80,21 @@ const processSteps = [
     description:
       "Your polished, professional website goes live for the world to see.",
   },
-]
+];
 
 const questionnaireUrl =
-  "https://docs.google.com/forms/d/e/1FAIpQLSd1WgbA33GUhJsmRPUL43GUk-WPjyedbvb7iZy0py9uGdWgdw/viewform"
+  "https://docs.google.com/forms/d/e/1FAIpQLSd1WgbA33GUhJsmRPUL43GUk-WPjyedbvb7iZy0py9uGdWgdw/viewform";
 
 export function ServicesSection() {
   return (
     <section id="services" className="relative py-20 md:py-32 px-4">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5 pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto">
 
-        {/* Header */}
-        <div className="mb-16 space-y-4">
-          <FadeZoomIn>
+        {/* HEADER */}
+        <FadeZoom>
+          <div className="mb-16 space-y-4">
             <div className="flex items-center gap-4">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 <span className="text-accent font-mono text-xl md:text-2xl">
@@ -105,48 +104,54 @@ export function ServicesSection() {
               </h2>
               <div className="flex-1 h-px bg-border max-w-xs hidden md:block" />
             </div>
-          </FadeZoomIn>
-        </div>
+          </div>
+        </FadeZoom>
 
-        {/* Packages & Pricing */}
+        {/* PACKAGES & PRICING */}
         <div className="mb-20">
-          <FadeSlideUp>
+          <FadeUp>
             <h3 className="text-2xl font-semibold text-foreground mb-8 text-center">
               Packages & Pricing
             </h3>
-          </FadeSlideUp>
+          </FadeUp>
 
- <StaggerParent>
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-    {packages.map((pkg) => (
-      <StaggerItem key={pkg.title}>
-        <Card
-          className="h-full p-6 bg-card/50 backdrop-blur-sm border-border 
-          hover:border-accent/50 transition-all duration-300 group hover:-translate-y-1"
-        >
-          <pkg.icon className="w-10 h-10 text-accent mb-4 group-hover:scale-110 transition-transform" />
-          <h4 className="font-semibold text-foreground text-lg mb-1">{pkg.title}</h4>
-          <p className="text-accent font-mono text-xl font-bold mb-3">{pkg.price}</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">{pkg.description}</p>
-        </Card>
-      </StaggerItem>
-    ))}
- 
-</div>
- </StaggerParent>
+          <StaggerParent>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {packages.map((pkg) => (
+                <StaggerItem key={pkg.title}>
+                  <Card
+                    className="h-full p-6 bg-card/50 backdrop-blur-sm border-border 
+                    hover:border-accent/50 transition-all duration-300 
+                    group hover:-translate-y-1"
+                  >
+                    <pkg.icon className="w-10 h-10 text-accent mb-4 group-hover:scale-110 transition-transform" />
+                    <h4 className="font-semibold text-foreground text-lg mb-1">
+                      {pkg.title}
+                    </h4>
+                    <p className="text-accent font-mono text-xl font-bold mb-3">
+                      {pkg.price}
+                    </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {pkg.description}
+                    </p>
+                  </Card>
+                </StaggerItem>
+              ))}
+            </div>
+          </StaggerParent>
         </div>
 
-        {/* My Process */}
+        {/* MY PROCESS */}
         <div className="mb-20">
-          <FadeSlideUp>
+          <FadeUp>
             <h3 className="text-2xl font-semibold text-foreground mb-8 text-center">
               My Process
             </h3>
-          </FadeSlideUp>
+          </FadeUp>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {processSteps.map((step, index) => (
-              <FadeSlideUp key={step.title} delay={index * 0.15}>
+              <FadeUp key={step.title} delay={index * 0.12}>
                 <div className="relative h-full">
                   <Card className="p-6 h-full bg-card/50 backdrop-blur-sm border-border hover:border-accent/50 transition-all duration-300 group">
                     <div className="flex items-center gap-3 mb-4">
@@ -155,6 +160,7 @@ export function ServicesSection() {
                       </span>
                       <step.icon className="w-6 h-6 text-accent group-hover:scale-110 transition-transform" />
                     </div>
+
                     <h4 className="font-semibold text-foreground text-lg mb-2">
                       {step.title}
                     </h4>
@@ -163,38 +169,40 @@ export function ServicesSection() {
                     </p>
                   </Card>
 
-                  {/* Connector arrow */}
                   {index < processSteps.length - 1 && (
                     <div className="hidden lg:flex absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
                       <ArrowRight className="w-6 h-6 text-accent/50" />
                     </div>
                   )}
                 </div>
-              </FadeSlideUp>
+              </FadeUp>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
-       <RevealExpand delay={0.2}>
-  <Card className="p-8 md:p-12 bg-gradient-to-br from-accent/10 to-primary/5 
-                  border-accent/20 text-center rounded-2xl">
-    <p className="text-xl md:text-2xl text-foreground font-medium mb-6 text-pretty max-w-2xl mx-auto">
-      Ready for a website that finally feels professional? I'd love to help.
-    </p>
-    <Button
-      asChild
-      size="lg"
-      className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8"
-    >
-      <a href={questionnaireUrl} target="_blank" rel="noopener noreferrer">
-        Start Your Project
-        <ArrowRight className="ml-2 w-4 h-4" />
-      </a>
-    </Button>
-  </Card>
-</RevealExpand>
+        {/* CTA BANNER */}
+        <RevealExpand delay={0.2}>
+          <Card
+            className="p-8 md:p-12 bg-gradient-to-br from-accent/10 to-primary/5
+            border-accent/20 text-center rounded-2xl"
+          >
+            <p className="text-xl md:text-2xl text-foreground font-medium mb-6 text-pretty max-w-2xl mx-auto">
+              Ready for a website that finally feels professional? I'd love to help.
+            </p>
+
+            <Button
+              asChild
+              size="lg"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8"
+            >
+              <a href={questionnaireUrl} target="_blank" rel="noopener noreferrer">
+                Start Your Project
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </a>
+            </Button>
+          </Card>
+        </RevealExpand>
       </div>
     </section>
-  )
+  );
 }

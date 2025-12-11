@@ -2,7 +2,13 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/buttons";
 import { Mail, Linkedin, Instagram, FileText } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { FadeZoomIn, StaggerFadeUp, FadeSlideUp } from "./src/animations/SectionAnimations";
+
+import {
+  FadeZoom,
+  FadeUp,
+  StaggerParent,
+  StaggerItem,
+} from "./src/animations/SectionAnimations";
 
 const contactMethods = [
   {
@@ -48,51 +54,58 @@ export function ContactSection() {
 
         <div className="relative max-w-4xl mx-auto">
 
-          {/* Header */}
-          <FadeZoomIn>
+          {/* HEADER */}
+          <FadeZoom>
             <div className="mb-16 space-y-4 text-center">
               <div className="flex items-center justify-center gap-4">
                 <div className="flex-1 h-px max-w-xs hidden md:block bg-gray-800" />
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                  <span className="text-accent font-mono text-xl md:text-2xl">06.</span> Get In Touch
+                  <span className="text-accent font-mono text-xl md:text-2xl">06.</span>{" "}
+                  Get In Touch
                 </h2>
                 <div className="flex-1 h-px max-w-xs hidden md:block bg-gray-800" />
               </div>
+
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-balance">
-                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-                Feel free to reach out!
+                I'm always open to discussing new projects, creative ideas, or opportunities 
+                to be part of your vision. Feel free to reach out!
               </p>
             </div>
-          </FadeZoomIn>
+          </FadeZoom>
 
-          {/* Contact Cards */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-12">
-            {contactMethods.map((method, index) => (
-              <StaggerFadeUp key={method.label} delay={index * 0.15}>
-                <a
-                  href={method.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block"
-                >
-                  <Card className="p-6 bg-card/50 backdrop-blur-sm border-gray-800 hover:border-accent/50 transition-all hover:translate-y-[-2px] text-center lg:text-left h-full">
-                    <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:gap-4">
-                      <div className="p-3 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors flex items-center justify-center">
-                        <method.icon className="w-6 h-6 text-accent" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm text-muted-foreground mb-1">{method.label}</div>
-                        <div className="font-mono text-sm text-foreground truncate">{method.value}</div>
-                      </div>
-                    </div>
-                  </Card>
-                </a>
-              </StaggerFadeUp>
-            ))}
-          </div>
+          {/* CONTACT CARDS WITH STAGGER */}
+          <StaggerParent>
+            <div className="grid sm:grid-cols-2 gap-4 mb-12">
+              {contactMethods.map((method) => (
+                <StaggerItem key={method.label}>
+                  <a
+                    href={method.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block h-full"
+                  >
+                    <Card className="p-6 bg-card/50 backdrop-blur-sm border-gray-800 
+                                    hover:border-accent/50 transition-all hover:translate-y-[-2px]
+                                    text-center lg:text-left h-full">
+                      <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:gap-4">
+                        <div className="p-3 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors flex items-center justify-center">
+                          <method.icon className="w-6 h-6 text-accent" />
+                        </div>
 
-          {/* CTA Button */}
-          <FadeSlideUp delay={0.2}>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm text-muted-foreground mb-1">{method.label}</div>
+                          <div className="font-mono text-sm text-foreground truncate">{method.value}</div>
+                        </div>
+                      </div>
+                    </Card>
+                  </a>
+                </StaggerItem>
+              ))}
+            </div>
+          </StaggerParent>
+
+          {/* CTA BUTTON */}
+          <FadeUp delay={0.2}>
             <div className="text-center">
               <Button
                 size="lg"
@@ -105,16 +118,16 @@ export function ContactSection() {
                 </a>
               </Button>
             </div>
-          </FadeSlideUp>
+          </FadeUp>
 
-          {/* Footer note */}
-          <FadeSlideUp delay={0.35}>
+          {/* FOOTER NOTE */}
+          <FadeUp delay={0.35}>
             <div className="mt-16 pt-8 border-t border-gray-800 text-center">
               <p className="text-sm text-muted-foreground">
                 Designed & Built by <span className="text-accent font-mono">Joe Capon</span>
               </p>
             </div>
-          </FadeSlideUp>
+          </FadeUp>
 
         </div>
       </section>
