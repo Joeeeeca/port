@@ -26,6 +26,7 @@ export function ReadingProgress() {
       transition={{ ease: "linear" }}
       style={{
         transformOrigin: "0% 50%",
+        willChange: "opacity, transform"
       }}
     />
   );

@@ -1,5 +1,6 @@
 import { Card } from "./ui/card"
 import { Lightbulb, Target, Heart, Handshake } from "lucide-react"
+import {FadeZoomIn, StaggerFadeUp } from "./src/animations/SectionAnimations";
 
 const offerings = [
   {
@@ -25,16 +26,19 @@ export function MyStorySection() {
       <div className="relative max-w-4xl mx-auto">
         {/* Section Header */}
         <div className="mb-16 space-y-4">
+          <FadeZoomIn>
           <div className="flex items-center gap-4">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
               <span className="text-accent font-mono text-xl md:text-2xl">04.</span> My Story
             </h2>
             <div className="flex-1 h-px bg-border max-w-xs hidden md:block" />
           </div>
+          </FadeZoomIn>
         </div>
 
         <div className="space-y-8">
           {/* Opening - The Struggle */}
+          <StaggerFadeUp delay={0.1}>
           <Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-border">
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p className="text-pretty">
@@ -47,8 +51,10 @@ export function MyStorySection() {
               </p>
             </div>
           </Card>
+          </StaggerFadeUp>
 
           {/* The Turning Point */}
+          <StaggerFadeUp delay={0.2}>
           <Card className="p-6 md:p-8 bg-gradient-to-br from-accent/10 to-primary/5 border-accent/20">
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p className="text-pretty">
@@ -62,26 +68,32 @@ export function MyStorySection() {
               </p>
             </div>
           </Card>
+          </StaggerFadeUp>
 
           {/* What I Do Now */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-foreground">Fast-forward to today and I now help clients:</h3>
             <div className="space-y-4">
-              {offerings.map((offering, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 p-4 rounded-lg bg-card/30 border border-border hover:border-accent/50 transition-colors group"
-                >
-                  <div className="mt-1 p-2 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors">
-                    <offering.icon className="w-5 h-5 text-accent" />
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed text-pretty">{offering.text}</p>
-                </div>
-              ))}
+ {offerings.map((offering, index) => (
+  <StaggerFadeUp key={index} delay={index * 0.12}>
+    <div
+      className="flex items-start gap-4 p-4 rounded-lg bg-card/30 border border-border hover:border-accent/50 transition-colors group"
+    >
+      <div className="mt-1 p-2 rounded-lg bg-accent/10 group-hover:bg-accent/20 transition-colors">
+        <offering.icon className="w-5 h-5 text-accent" />
+      </div>
+      <p className="text-muted-foreground leading-relaxed text-pretty">
+        {offering.text}
+      </p>
+    </div>
+  </StaggerFadeUp>
+))}
+
             </div>
           </div>
 
           {/* Why I Love It */}
+          <StaggerFadeUp delay={0.1}>
           <Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-border">
             <h3 className="text-xl font-semibold text-foreground mb-4">Why I love designing and building websites:</h3>
             <div className="grid md:grid-cols-3 gap-4">
@@ -102,8 +114,10 @@ export function MyStorySection() {
               "And honestly, I have never enjoyed anything as much as I enjoy making websites."
             </p>
           </Card>
+          </StaggerFadeUp>
 
           {/* Mission & CTA */}
+          <StaggerFadeUp delay={0.2}>
           <Card className="p-6 md:p-8 bg-gradient-to-br from-primary/10 to-accent/5 border-primary/20">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-lg bg-accent/10">
@@ -122,6 +136,7 @@ export function MyStorySection() {
               </div>
             </div>
           </Card>
+          </StaggerFadeUp>
         </div>
       </div>
     </section>

@@ -1,10 +1,12 @@
 import { Card } from "./ui/card"
 import { ExternalLink, Github } from "lucide-react"
 import { Helmet } from "react-helmet-async"
-import project1 from "./src/assets/Project1.png"
-import project2 from "./src/assets/Project2.png"
-import project3 from "./src/assets/Project3.png"
-import project4 from "./src/assets/Project4.png"
+import project1 from "./src/assets/Project1.webp"
+import project2 from "./src/assets/Project2.webp"
+import project3 from "./src/assets/Project3.webp"
+import project4 from "./src/assets/Project4.webp"
+import { LuxeSlideLR} from "./src/animations/SectionAnimations"
+import { FadeZoomIn } from "./src/animations/SectionAnimations"
 
 const projects = [
   {
@@ -86,24 +88,31 @@ export function ProjectsSection() {
         <div className="relative max-w-6xl mx-auto">
 
           {/* Header */}
+            <FadeZoomIn>
           <div className="mb-16 space-y-4">
-            <div className="flex items-center gap-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground flex items-center">
-                <span className="text-accent font-mono text-xl md:text-2xl mr-2">02.</span>
-                Previous Work
-              </h2>
-              <div className="flex-1 h-px max-w-xs bg-gray-800 hidden md:block" />
-            </div>
+       
+  <div className="flex items-center gap-4">
+    <h2 className="text-3xl md:text-4xl font-bold text-foreground flex items-center">
+      <span className="text-accent font-mono text-xl md:text-2xl mr-2">02.</span>
+      Previous Work
+    </h2>
+    <div className="flex-1 h-px max-w-xs bg-gray-800 hidden md:block" />
+  </div>
+
 
             <p className="text-muted-foreground text-lg max-w-2xl text-pretty text-center lg:text-left mx-auto lg:mx-0">
               Here are some of my recent projects that showcase my skills and experience in web development.
             </p>
           </div>
-
+</FadeZoomIn>
           {/* Projects */}
           <div className="space-y-24">
-            {projects.map((project, index) => (
-              <div key={project.title} className="space-y-10">
+           {projects.map((project, index) => (
+  <LuxeSlideLR
+    key={project.title}
+    direction={index % 2 === 0 ? "left" : "right"}
+  >
+    <div className="space-y-10">
 
                 {/* Project Layout */}
                 <div
@@ -196,6 +205,7 @@ export function ProjectsSection() {
                 </Card>
 
               </div>
+              </LuxeSlideLR>
             ))}
           </div>
 

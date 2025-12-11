@@ -207,6 +207,7 @@ const toc = useMemo(() => {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/15 via-background to-primary/5" />
 
           <motion.div
+          style={{ willChange: "opacity, transform" }}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
@@ -286,6 +287,7 @@ const toc = useMemo(() => {
       <div className="grid gap-12 lg:grid-cols-[1fr_280px] items-start">
             {/* Main content */}
             <motion.div
+            style={{ willChange: "opacity, transform" }}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
@@ -382,6 +384,7 @@ const toc = useMemo(() => {
               <div className="grid gap-8 md:grid-cols-3">
                 {relatedPosts.map((rp, index) => (
                   <motion.div
+                  style={{ willChange: "opacity, transform" }}
                     key={rp.slug}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
