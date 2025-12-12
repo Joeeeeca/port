@@ -2,33 +2,31 @@
 
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
-import { Button } from "./ui/buttons";
+import { Button } from "./ui/buttons"
 
 export function ThemeToggle() {
-const [theme, setTheme] = React.useState<"light" | "dark">("dark");
+  const [theme, setTheme] = React.useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "dark"
+    return localStorage.getItem("theme") === "light" ? "light" : "dark"
+  })
 
-React.useEffect(() => {
-  const root = window.document.documentElement;
-  const body = window.document.body;
+  React.useEffect(() => {
+    const root = document.documentElement
 
-  // Remove both theme classes everywhere
-  root.classList.remove("light", "dark");
-  body.classList.remove("light", "dark");
-
-  // Add the new one
-  root.classList.add(theme);
-  body.classList.add(theme);
-}, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light")
-  }
+    if (theme === "dark") {
+      root.classList.add("dark")
+      localStorage.setItem("theme", "dark")
+    } else {
+      root.classList.remove("dark")
+      localStorage.setItem("theme", "light")
+    }
+  }, [theme])
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="fixed top-6 right-6 z-50"
       aria-label="Toggle theme"
     >

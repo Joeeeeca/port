@@ -34,25 +34,27 @@ export function HeroSection() {
       <section
         id="hero"
         className="
-          relative min-h-screen flex items-center justify-center px-4 
-          py-20 md:py-0 overflow-hidden
+          relative z-0 min-h-screen flex items-center justify-center
+          px-4 py-20 md:py-0 overflow-hidden
         "
-        style={{
-          contentVisibility: "auto",
-          containIntrinsicSize: "1px 800px",
-        }}
       >
-        {/* 🎨 GPU-only background gradient */}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#0b0b0f_0%,#0f0f17_100%)] pointer-events-none" />
+        {/* 🎨 Theme-aware background gradient */}
+        <div
+          className="
+            absolute inset-0 pointer-events-none z-[-1]
+            bg-gradient-to-b
+            from-zinc-50 via-white to-zinc-100
+            dark:from-[#0b0b0f] dark:via-[#0f0f17] dark:to-[#0b0b0f]
+          "
+        />
 
-        <div className="relative max-w-5xl mx-auto w-full space-y-12">
+        <div className="relative z-10 max-w-5xl mx-auto w-full space-y-12">
 
           {/* -------------------------------------------------
              GREETING + HERO HEADINGS
           ------------------------------------------------- */}
           <div className="space-y-4 text-center lg:text-left">
 
-            {/* SAFE animated intro text */}
             <HeroFadeUp delay={0}>
               <p className="text-accent font-mono text-sm md:text-base">
                 Hi, my name is
@@ -62,20 +64,19 @@ export function HeroSection() {
             {/* 🚀 LCP Element — NO ANIMATION */}
             <h1
               className="
-                text-4xl md:text-6xl lg:text-7xl 
-                font-bold text-foreground 
+                text-4xl md:text-6xl lg:text-7xl
+                font-bold text-foreground
                 leading-tight text-balance
               "
             >
               Joe Capon
             </h1>
 
-            {/* Subheading can animate */}
             <HeroFadeUp delay={0.25}>
               <h2
                 className="
-                  text-2xl md:text-5xl lg:text-6xl 
-                  font-bold text-muted-foreground 
+                  text-2xl md:text-5xl lg:text-6xl
+                  font-bold text-muted-foreground
                   text-balance
                 "
               >
@@ -90,8 +91,8 @@ export function HeroSection() {
           <HeroFadeUp delay={0.45}>
             <p
               className="
-                max-w-2xl text-base md:text-lg 
-                text-muted-foreground leading-relaxed 
+                max-w-2xl text-base md:text-lg
+                text-muted-foreground leading-relaxed
                 text-pretty text-center lg:text-left
               "
             >
@@ -109,9 +110,9 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   className="
-                    bg-transparent border-2 
-                    border-primary text-primary 
-                    hover:bg-accent/10 hover:text-white 
+                    bg-transparent border-2
+                    border-primary text-primary
+                    hover:bg-accent/10 hover:text-white
                     dark:text-accent dark:border-accent
                   "
                 >
@@ -136,7 +137,6 @@ export function HeroSection() {
           ------------------------------------------------- */}
           <HeroFadeUp delay={0.85}>
             <div className="flex gap-6 pt-2 justify-center lg:justify-start">
-
               <a
                 href="https://linkedin.com/in/joe-capon-0199b5235"
                 target="_blank"
@@ -164,7 +164,6 @@ export function HeroSection() {
               >
                 <Mail className="w-6 h-6" />
               </a>
-
             </div>
           </HeroFadeUp>
         </div>
@@ -172,7 +171,7 @@ export function HeroSection() {
         {/* -------------------------------------------------
            SCROLL INDICATOR
         ------------------------------------------------- */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block z-10">
           <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2">
             <div className="w-1.5 h-3 bg-accent rounded-full animate-bounce" />
           </div>
