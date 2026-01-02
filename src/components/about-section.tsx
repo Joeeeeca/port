@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import {
   FadeZoom,
   SlideLR,
-} from "./src/animations/SectionAnimations";
+} from "../animations/SectionAnimations";
 
 const skills = [
   {

@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import HomePage from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import ProjectsPage from "./pages/projects-page"
 
 export default function App() {
   const location = useLocation();
@@ -23,6 +24,8 @@ export default function App() {
           path="/blog/:slug"
           element={<BlogPostPage />}
         />
+
+        <Route path="/projects" element={<ProjectsPage />} />
       </Routes>
     </AnimatePresence>
   );

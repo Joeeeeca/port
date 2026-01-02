@@ -1,7 +1,7 @@
 import { Button } from "./ui/buttons";
 import { Linkedin, Mail, Instagram } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { HeroFadeUp } from "./src/animations/SectionAnimations"; 
+import { HeroFadeUp } from "../animations/SectionAnimations"; 
 // H1 intentionally has NO animation → protects LCP score.
 
 export function HeroSection() {
@@ -113,7 +113,7 @@ export function HeroSection() {
                     bg-transparent border-2
                     border-primary text-primary
                     hover:bg-accent/10 hover:text-white
-                    dark:text-accent dark:border-accent
+                    dark:text-accent dark:border-accent cursor-pointer
                   "
                 >
                   View My Work
@@ -124,7 +124,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 bg-transparent"
+                  className="border-2 bg-transparent cursor-pointer"
                 >
                   Get In Touch
                 </Button>

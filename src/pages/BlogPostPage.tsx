@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Navbar } from "../../navbar";
+import { Navbar } from "../components/navbar";
 import { fetchBlogPost, fetchBlogPosts } from "../blog/blog-data";
 import { motion } from "framer-motion";
-import { PageTransition } from "../../ui/PageTransition";
-import { ReadingProgress } from "../../ui/ReadingProgress";
+import { PageTransition } from "../components/ui/PageTransition";
+import { ReadingProgress } from "../components/ui/ReadingProgress";
 import { TableOfContents } from "../blog/TableofContents";
 
 // ---- Helpers ------------------------------------------------

@@ -1,16 +1,18 @@
 import { Card } from "./ui/card";
 import { ExternalLink, Github } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { Button } from "./ui/buttons";
+import { Link } from "react-router-dom"
 
-import project1 from "./src/assets/Project1.webp";
-import project2 from "./src/assets/Project2.webp";
-import project3 from "./src/assets/Project3.webp";
-import project4 from "./src/assets/Project4.webp";
+import project1 from "../assets/Project1.webp";
+import project2 from "../assets/Project2.webp";
+import project3 from "../assets/Project3.webp";
+import project4 from "../assets/Project4.webp";
 
 import {
   FadeZoom,
   SlideLR,
-} from "./src/animations/SectionAnimations";
+} from "../animations/SectionAnimations";
 
 const projects = [
   {
@@ -63,8 +65,8 @@ const projects = [
     description:
       "A high-energy, conversion-focused website built for a personal training brand. The site showcases services, transformations, and client results through a clean, modern design with strong visual hierarchy. Structured sections, compelling CTAs, and mobile-first responsiveness help personal trainers attract more clients and build trust with visitors.",
     technologies: ["React", "Vite", "Tailwind CSS", "Framer Motion", "TypeScript"],
-    githubUrl: "https://github.com/Joeeeeca/FitCore",
-    liveUrl: "https://your-live-url.com",
+    githubUrl: "https://github.com/Joeeeeca/Fit-Core",
+    liveUrl: "https://joeeeeca.github.io/Fit-Core/",
     image: project4,
     results: {
       before:
@@ -216,6 +218,17 @@ export function ProjectsSection() {
               </SlideLR>
             ))}
           </div>
+            {/* View More Button */}
+        <div className="flex justify-center mt-16">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="border-2 border-accent text-accent hover:bg-accent/10 bg-transparent"
+          >
+            <Link to="/projects">View All Projects</Link>
+          </Button>
+        </div>
         </div>
       </section>
     </>

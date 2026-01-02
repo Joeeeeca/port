@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Navbar } from "../../navbar";
-import { BlogHeader } from "../../blog/blog-header";
-import { BlogPostCard } from "../../blog/blog-post-card";
+import { Navbar } from "../components/navbar";
+import { BlogHeader } from "../components/blog/blog-header";
+import { BlogPostCard } from "../components/blog/blog-post-card";
 import { TagFilter } from "../blog/tag-filter";
 import { fetchBlogPosts, fetchAllTags } from "../blog/blog-data";
 import type { BlogPost } from "../blog/blog-data";
-import { PageTransition } from "../../ui/PageTransition";
+import { PageTransition } from "../components/ui/PageTransition";
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);

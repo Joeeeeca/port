@@ -6,7 +6,7 @@ import {
   FadeUp,
   StaggerParent,
   StaggerItem,
-} from "./src/animations/SectionAnimations";
+} from "../animations/SectionAnimations";
 
 const offerings = [
   {

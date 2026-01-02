@@ -18,7 +18,7 @@ import {
   RevealExpand,
   StaggerParent,
   StaggerItem,
-} from "./src/animations/SectionAnimations";
+} from "../animations/SectionAnimations";
 
 const packages = [
   {
