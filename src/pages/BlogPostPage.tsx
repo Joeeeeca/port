@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import { PageTransition } from "../components/ui/PageTransition";
 import { ReadingProgress } from "../components/ui/ReadingProgress";
 import { TableOfContents } from "../blog/TableofContents";
+import { ShareButton } from "../components/blog/ShareButton";
+
 
 // ---- Helpers ------------------------------------------------
 
@@ -272,12 +274,13 @@ const toc = useMemo(() => {
                 <span>{post.readTime}</span>
               </div>
 
-              <div className="ml-auto">
-                <button className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-1.5 text-xs text-muted-foreground transition hover:border-primary hover:text-primary">
-                  <span>Share</span>
-                  <span className="text-xs">↗</span>
-                </button>
-              </div>
+             <div className="ml-auto">
+  <ShareButton
+    url={`https://joecapondesigns.com/blog/${post.slug}`}
+    title={post.title}
+  />
+</div>
+
             </div>
           </motion.div>
         </header>
