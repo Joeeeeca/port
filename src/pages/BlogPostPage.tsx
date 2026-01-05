@@ -31,7 +31,7 @@ type UiPost = {
 };
 
 // Map PocketBase → UI
-function mapRecordToUi(record: any): UiPost {
+function mapPostToUi(record: any): UiPost {
   const content = String(record.content || "");
 
   // Inject IDs into <h3> headings
@@ -88,11 +88,11 @@ export default function BlogPostPage() {
           return;
         }
 
-        const mapped = mapRecordToUi(record);
+        const mapped = mapPostToUi(record);
         setPost(mapped);
 
         const allRecords = await fetchBlogPosts();
-        const allMapped = allRecords.map(mapRecordToUi);
+        const allMapped = allRecords.map(mapPostToUi);
 
         const related = allMapped
           .filter((p) => p.slug !== mapped.slug)

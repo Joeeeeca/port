@@ -1,59 +1,55 @@
-import pb from "../lib/pocketbase";
+// src/blog/blog-data.ts
 
 // -----------------------------
 // Types
 // -----------------------------
 export interface BlogPost {
-  id: string;
-  title: string;
-  content: string;
-  excerpt?: string;
-  created: string;
-  readTime?: string;
-  category?: string;
-  tags?: string;
-  slugs?: string;   // ✅ slug field from PB
+  slug: string
+  title: string
+  content: string
+  excerpt: string
+  created: string
+  readTime: string
+  category: string
+  tags: string[]
 }
 
 // -----------------------------
-// Fetch ALL posts
+// Static posts (THIS IS YOUR CMS FOR NOW)
+// -----------------------------
+const posts: BlogPost[] = [
+  {
+    slug: "why-your-website-isnt-converting",
+    title: "Why Your Website Isn’t Converting",
+    excerpt:
+      "Most business websites fail not because of design, but because of one overlooked issue.",
+    content: `
+<h3>The real problem</h3>
+<p>Most websites focus on looking good instead of guiding users.</p>
+
+<h3>What actually converts</h3>
+<p>Clear messaging, strong CTAs, and trust signals.</p>
+    `,
+    created: "2026-01-08",
+    readTime: "6 min read",
+    category: "Conversion",
+    tags: ["SEO", "Conversion"],
+  },
+]
+
+// -----------------------------
+// Public API (same names as before)
 // -----------------------------
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const records = await pb.collection("posts").getFullList({
-    sort: "-created",
-  });
-
-  return records as unknown as BlogPost[];
+  return posts
 }
 
-// -----------------------------
-// Fetch SINGLE post by slug
-// -----------------------------
 export async function fetchBlogPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const record = await pb
-      .collection("posts")
-      .getFirstListItem(`slugs="${slug}"`);
-
-    return record as unknown as BlogPost;
-  } catch (err) {
-    console.error("Post not found:", slug);
-    return null;
-  }
+  return posts.find((p) => p.slug === slug) ?? null
 }
 
-// -----------------------------
-// Fetch all TAGS from PB
-// -----------------------------
 export async function fetchAllTags(): Promise<string[]> {
-  const posts = await fetchBlogPosts();
-
-  const tags = new Set<string>();
-
-  posts.forEach((p) => {
-    if (!p.tags) return;
-    p.tags.split(",").forEach((t) => tags.add(t.trim()));
-  });
-
-  return Array.from(tags);
+  const tags = new Set<string>()
+  posts.forEach((p) => p.tags.forEach((t) => tags.add(t)))
+  return Array.from(tags)
 }

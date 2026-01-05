@@ -30,21 +30,15 @@ export default function BlogPage() {
     ? posts.filter((p) => p.tags?.includes(selectedTag))
     : posts;
 
-  // Convert PocketBase record → UI format
 const mappedPosts = filtered.map((p) => ({
-  slug: p.slugs || p.id,
-  title: p.title,
-  excerpt: p.excerpt || p.content?.slice(0, 120) + "...",
+  ...p,
   date: new Date(p.created).toLocaleDateString("en-UK", {
     month: "short",
     day: "numeric",
     year: "numeric",
   }),
-  readTime: p.readTime || "5 min read",
-  category: p.category || "General",
-  tags: p.tags ? p.tags.split(",").map((t) => t.trim()) : [],
-  content: p.content,
-}));
+}))
+
 
   return (
     <PageTransition>
